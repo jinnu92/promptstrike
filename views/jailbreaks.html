@@ -1,0 +1,65 @@
+<div class="S"><div class="ST">&#x1F575;&#xFE0F; Jailbreak Pattern Library</div>
+<p style="font-size:.72rem;color:#5a7a9a;margin-bottom:8px">Browsable library of known jailbreak techniques with full prompts, indicators, and countermeasures.</p>
+<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+<input type="text" placeholder="&#x1F50D; Search jailbreaks..." style="flex:1" oninput="jbSearch(this.value)"/>
+</div>
+<div class="bR" style="flex-wrap:wrap;margin-bottom:8px">
+<button class="btn bP" onclick="jbOpenAddModal()">&#x2795; Add Jailbreak</button>
+<label class="btn bS" style="cursor:pointer;font-size:.7rem">&#x1F4E5; Import JSON<input type="file" accept=".json" style="display:none" onchange="jbImportJSON(this)"/></label>
+<button class="btn bS" onclick="jbExportJSON()">&#x1F4E4; Export JSON</button>
+<button class="btn bS" onclick="jbDedup()">&#x1F9F9; Dedup</button>
+<button class="btn bS" onclick="jbResetDefaults()" style="border-color:#ff0090;color:#ff0090">&#x1F504; Reset to Defaults</button>
+</div>
+<div style="margin-bottom:8px;font-size:.7rem;color:#5a7a9a">
+  <label><input type="checkbox" id="jbSkipDuplicates"/> Skip duplicates (don't update existing on import)</label>
+</div>
+<div id="jbFilterContainer" style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px">
+<span class="domB active jbFilterPill" onclick="jbFilter('all',this)">All</span>
+<span class="domB jbFilterPill" onclick="jbFilter('Persona Override',this)">Persona Override</span>
+<span class="domB jbFilterPill" onclick="jbFilter('Social Engineering',this)">Social Engineering</span>
+<span class="domB jbFilterPill" onclick="jbFilter('Encoding',this)">Encoding</span>
+<span class="domB jbFilterPill" onclick="jbFilter('Multi-Turn',this)">Multi-Turn</span>
+<span class="domB jbFilterPill" onclick="jbFilter('Authority Impersonation',this)">Authority</span>
+<span class="domB jbFilterPill" onclick="jbFilter('Logic Manipulation',this)">Logic</span>
+<span class="domB jbFilterPill" onclick="jbFilter('Output Control',this)">Output Control</span>
+<span class="domB jbFilterPill" onclick="jbFilter('Framing',this)">Framing</span>
+<span class="domB jbFilterPill" onclick="jbFilter('Task Framing',this)">Task Framing</span>
+<span class="domB jbFilterPill" onclick="jbFilter('Guardrail Bypass',this)">Guardrail Bypass</span>
+<span class="domB jbFilterPill" onclick="jbFilter('Context Manipulation',this)">Context Manipulation</span>
+<span class="domB jbFilterPill" onclick="jbFilter('Promptware',this)" style="border-color:#ff0090;color:#ff0090">Promptware</span>
+<span class="domB jbFilterPill" onclick="jbFilter('CoT Exploitation',this)" style="border-color:#00f0ff;color:#0aff0a">CoT Exploit</span>
+</div>
+<div id="jbStats" style="font-size:.7rem;color:#5a7a9a;margin-bottom:10px"></div>
+</div>
+<div id="jbList"></div>
+
+<!-- Jailbreak Add/Edit Modal -->
+<div id="jbModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:10001;align-items:center;justify-content:center" onclick="if(event.target===this)jbCloseModal()">
+<div style="background:var(--bg-panel);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;max-width:700px;width:92%;max-height:85vh;overflow-y:auto">
+  <div class="ST" id="jbModalTitle">Add New Jailbreak</div>
+  <input type="hidden" id="jbEditId"/>
+  <div class="row">
+    <div><label>Name</label><input id="jbFName" placeholder="e.g., My Custom Jailbreak"/></div>
+    <div><label>Category</label><input id="jbFCategory" placeholder="e.g., Persona Override" list="jbCatList"/><datalist id="jbCatList"></datalist></div>
+  </div>
+  <div class="row">
+    <div><label>Difficulty</label><select id="jbFDifficulty"><option>Easy</option><option selected>Medium</option><option>Hard</option></select></div>
+    <div><label>Effectiveness</label><select id="jbFEffectiveness"><option selected>Active</option><option>Partial</option><option>Patched</option></select></div>
+    <div><label>OWASP</label><select id="jbFOwasp"><option>LLM01</option><option>LLM02</option><option>LLM03</option><option>LLM04</option><option>LLM06</option><option>LLM07</option><option>LLM09</option><option>LLM10</option></select></div>
+  </div>
+  <label>Description</label>
+  <textarea id="jbFDescription" style="min-height:60px" placeholder="Brief description of the jailbreak technique..."></textarea>
+  <label>Prompt</label>
+  <textarea id="jbFPrompt" style="min-height:160px;font-family:monospace;font-size:.72rem" placeholder="Enter the full jailbreak prompt text..."></textarea>
+  <label>Test With <span style="font-size:.6rem;color:#2a4a5a">(comma-separated)</span></label>
+  <input id="jbFTestWith" placeholder="e.g., ChatGPT, Claude, Gemini, Llama"/>
+  <label>Success Indicators <span style="font-size:.6rem;color:#2a4a5a">(one per line)</span></label>
+  <textarea id="jbFIndicators" style="min-height:80px" placeholder="Model says X&#10;Responds without disclaimers&#10;..."></textarea>
+  <label>Countermeasures <span style="font-size:.6rem;color:#2a4a5a">(one per line)</span></label>
+  <textarea id="jbFCountermeasures" style="min-height:80px" placeholder="System prompt enforcement&#10;Output filtering&#10;..."></textarea>
+  <div class="bR" style="margin-top:12px">
+    <button class="btn bP" onclick="jbSaveModal()">Save</button>
+    <button class="btn bS" onclick="jbCloseModal()">Cancel</button>
+  </div>
+</div>
+</div>

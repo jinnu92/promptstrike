@@ -1,0 +1,19 @@
+# Environments
+venv/
+.env
+.env.local
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Project Specific
+.claude/
+.claude-flow/
+.mcp.json
+*.pyc
+__pycache__/
+
+# Large outputs
+reports/*.pdf
+strike_logs/*.json

@@ -1,0 +1,40 @@
+/* ── CSS Variables (Design Tokens) ── */
+:root{
+--bg-body:#05050a;--bg-panel:#0a0a12;--bg-input:#06060e;--bg-input-alt:#06060e;--bg-hover:#0a1528;--bg-dropdown:#0a0a12;
+--accent:#00f0ff;--accent2:#ff0090;--accent3:#00ff41;--accent-grad:linear-gradient(135deg,#0080ff,#00f0ff);--accent-flat:#00f0ff;--accent-glow:0 0 15px rgba(0,240,255,0.3),0 0 40px rgba(0,240,255,0.1);--accent-shadow:0 0 10px rgba(0,240,255,0.15);--magenta-glow:0 0 15px rgba(255,0,144,0.3),0 0 40px rgba(255,0,144,0.1);
+--text-primary:#e0eaff;--text-secondary:#5a7a9a;--text-muted:#3a5a6a;--text-dim:#2a4a5a;
+--border:#0a2a3a;--border-light:#0a2a3a;--border-focus:#00f0ff;
+--danger:#ff2050;--danger-bg:#1a0a10;--danger-border:#3a1525;
+--warning:#ffaa00;--warning-bg:#1a1500;--warning-border:#3a3015;
+--success:#00ff88;--success-bg:#001a10;--success-border:#003a20;
+--info:#00f0ff;--info-bg:#001a20;--info-border:#003a40;
+--purple:#bf5fff;--purple-bg:#10002a;--purple-border:#bf5fff40;
+--medium:#00ff88;--medium-bg:#001a10;--medium-border:#003a20;
+--radius:2px;--radius-lg:4px;--radius-xl:6px;
+--font-xs:.62rem;--font-sm:.72rem;--font-md:.8rem;--font-lg:.88rem;--font-xl:1.1rem;
+--z-dropdown:9999;--z-topbar:100;--z-overlay:10000;--z-toast:10001;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'JetBrains Mono','Fira Code','Source Code Pro','Cascadia Code',monospace;
+  background:var(--bg-body);
+  color:var(--text-primary);
+  min-height:100vh;
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+/* ── CRT Scanline Overlay ── */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:99999;background:repeating-linear-gradient(0deg,rgba(0,0,0,0) 0px,rgba(0,0,0,0) 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px)}
+/* ── Scrollbar Styling ── */
+::-webkit-scrollbar{width:6px;background:#05050a}
+::-webkit-scrollbar-thumb{background:#0a2a3a;border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(0,240,255,0.25)}
+/* ── Focus ring for keyboard accessibility ── */
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:var(--radius)}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}

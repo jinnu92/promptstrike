@@ -1,0 +1,23 @@
+<div class="S">
+<div class="ST">&#x1F4E6; Payload Database Manager</div>
+<p style="font-size:.72rem;color:#5a7a9a;margin-bottom:8px">Manage your central prompt injection database. Pinned payloads will appear in the sidebar.</p>
+<div class="bR" style="flex-wrap:wrap;margin-bottom:8px">
+<button class="btn bP" onclick="pmOpenAddModal()">&#x2795; Add Payload</button>
+<label class="btn bS" style="cursor:pointer;font-size:.7rem">&#x1F4E5; Import JSON<input type="file" accept=".json" style="display:none" onchange="pmImportJSON(this)"/></label>
+<button class="btn bS" onclick="pmExportJSON()">&#x1F4E4; Export JSON</button>
+<button class="btn bS" onclick="pmDedup()">&#x1F9F9; Remove Duplicates</button>
+<button class="btn bS" onclick="pmResetDefaults()" style="border-color:#ff0090;color:#ff0090">&#x1F504; Reset to Defaults</button>
+</div>
+<div style="margin-bottom:8px;font-size:.7rem;color:#5a7a9a">
+  <label><input type="checkbox" id="pmSkipDuplicates"/> Skip duplicates (don't update existing on import)</label>
+</div>
+<div style="overflow-x:auto;max-height:60vh;overflow-y:auto">
+<table class="tbl" id="pmTable" role="table" aria-label="Payload database">
+<thead style="position:sticky;top:0;z-index:1"><tr>
+  <th style="width:60px">ID</th><th style="width:120px">Category</th><th>Payload Text</th><th style="width:70px">Severity</th><th style="width:65px">OWASP</th><th style="width:120px">Actions</th>
+</tr></thead>
+<tbody id="pmBody"></tbody>
+</table>
+</div>
+<div class="st" id="pmSt"></div>
+</div>

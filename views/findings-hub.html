@@ -1,0 +1,42 @@
+<div class="gen-layout">
+<div class="gen-config">
+<div class="S"><div class="ST">&#x1F4CA; Security Findings Overview</div>
+<p style="font-size:.72rem;color:#5a7a9a;margin-bottom:12px">Consolidated real-time analytics and vulnerability metrics from all active red-teaming campaigns.</p>
+
+<div id="findings_stats" style="display:grid;grid-template-columns:repeat(3, 1fr);gap:10px;margin-bottom:15px">
+  <div class="dash-stat-card"><div class="dash-stat-num" id="fh_total_strikes">0</div><div class="dash-stat-label">Total Strikes</div></div>
+  <div class="dash-stat-card" style="border-color:#ff009040"><div class="dash-stat-num" id="fh_total_breaches" style="color:#ff0090">0</div><div class="dash-stat-label">Policy Breaches</div></div>
+  <div class="dash-stat-card"><div class="dash-stat-num" id="fh_risk_score">LOW</div><div class="dash-stat-label">Risk Level</div></div>
+</div>
+
+<div class="S"><div class="ST">&#x1F6A8; Top Vulnerable Targets</div>
+<div style="overflow-x:auto">
+<table class="tbl" style="font-size:.65rem">
+  <thead><tr><th>Target Name</th><th>Breaches</th><th>Last Assessment</th></tr></thead>
+  <tbody id="fh_top_targets">
+    <!-- Populated by JS -->
+  </tbody>
+</table>
+</div>
+</div>
+
+<div class="bR" style="margin-top:12px">
+<button class="btn bP" onclick="showP('intel-reports')">&#x1F4D1; Create Audit Report</button>
+<button class="btn bS" onclick="showP('intel-strike-log')">&#x1F4DC; View Forensic Logs</button>
+</div>
+</div>
+
+<div class="gen-preview">
+<div class="S" style="height:100%;display:flex;flex-direction:column">
+<div class="ST">&#x26A0;&#xFE0F; Critical Breach Feed (Latest)</div>
+<div id="fh_critical_feed" style="flex:1;background:#05050a;border:1px solid #0a2a3a;padding:15px;border-radius:4px;overflow-y:auto">
+  <div style="color:#5a7a9a;text-align:center;margin-top:50px">No critical violations detected in recent cycles.</div>
+</div>
+
+<div class="S" style="margin-top:12px;background:rgba(255,0,144,0.05);border:1px dashed #ff009040">
+  <div class="ST" style="color:#ff0090;font-size:.65rem">Vulnerability Mapping</div>
+  <p style="font-size:.68rem;color:#e0eaff;">Detected breaches are automatically mapped to **OWASP LLM01-LLM10** guidelines based on Red Team Brain evaluation.</p>
+</div>
+</div>
+</div>
+</div>

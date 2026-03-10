@@ -1,0 +1,60 @@
+<div class="S"><div class="ST">&#x1F501; Multi-Turn Attack Sequences</div>
+<p style="font-size:.72rem;color:#5a7a9a;margin-bottom:8px">Simulate multi-turn conversational attacks that gradually escalate toward the target objective across multiple exchanges.</p>
+<div class="row" style="margin-bottom:8px">
+  <div style="flex:1"><label>Select Sequence Template</label>
+    <select id="mtSelect" onchange="loadMTSequence()">
+    <option value="">&#x2014; Select a sequence &#x2014;</option>
+    <option value="warmup-extract">Warm-Up &#x2192; Extract</option>
+    <option value="trust-building">Trust Building</option>
+    <option value="gradual-override">Gradual Override</option>
+    <option value="context-flood">Context Flood</option>
+    <option value="persona-shift">Persona Shift</option>
+    <option value="document-chain">Document Chain</option>
+    <option value="error-exploitation">Error Exploitation</option>
+    <option value="compliance-fatigue">Compliance Fatigue</option>
+    <option value="custom-attack">Custom Attack Path</option>
+    </select>  </div>
+  <div style="flex:1"><label>Final Target Payload (Optional)</label>
+    <div style="display:flex;gap:4px">
+      <select id="mtPayloadSel" style="flex:1;font-size:.65rem" onchange="if(this.value!=='')toast('Target payload set for final turn','ok')"></select>
+      <button class="btn bS" style="white-space:nowrap" onclick="mtLoadFromGen()">&#x1F4E5; Load Gen</button>
+    </div>
+  </div>
+</div>
+<div id="mtInfo" style="margin-top:8px"></div>
+<div class="bR" style="margin-top:8px">
+<button class="btn bS" onclick="mtReset()">&#x1F504; Reset</button>
+<button class="btn bS" onclick="mtExportJSON()">&#x1F4E5; Export JSON</button>
+<button class="btn bS" onclick="mtExportMD()">&#x1F4C4; Export Markdown</button>
+</div>
+<div class="st" id="mtSt"></div>
+</div>
+<div class="S"><div class="ST">&#x1F4AC; Conversation Turns</div>
+<div id="mtSteps" style="max-height:500px;overflow-y:auto"><div style="color:#2a4a5a;font-size:.75rem;padding:20px;text-align:center">Select a sequence above to begin.</div></div>
+</div>
+
+<div class="S"><div class="ST">&#x1F4D6; Researcher's Guide: Multi-Turn Attacks</div>
+<div style="font-size:.72rem;color:#e0eaff;line-height:1.6">
+  <p><strong style="color:#00f0ff">What are Multi-Turn Attacks?</strong><br/>
+  Multi-turn attacks exploit the conversational nature of LLMs by spreading a malicious objective across multiple messages. Each individual message may appear harmless, but the cumulative effect gradually steers the model past its safety boundaries.</p>
+
+  <p><strong style="color:#ff0090">Key Techniques:</strong></p>
+  <ul style="margin:4px 0 8px 18px;padding:0">
+    <li><strong>Warm-Up:</strong> Begin with innocent questions to establish a cooperative pattern.</li>
+    <li><strong>Trust Building:</strong> Claim authority or expertise to lower the model's guard.</li>
+    <li><strong>Context Flooding:</strong> Fill the context window with benign text to push safety instructions out of the attention window.</li>
+    <li><strong>Persona Shift:</strong> Use fictional scenarios to blur the boundary between roleplay and reality.</li>
+    <li><strong>Compliance Fatigue:</strong> Make many benign requests, then slip in a harmful one.</li>
+  </ul>
+
+  <div style="background:rgba(0,240,255,0.05);border:1px solid #00f0ff40;padding:12px;border-radius:4px;margin-top:10px">
+    <strong style="color:#00f0ff">How to Test:</strong>
+    <ol style="margin:8px 0 0 18px;padding:0">
+      <li>Select a sequence and copy each turn one by one into the target model.</li>
+      <li>Paste the model's response into the response box for each turn.</li>
+      <li>Observe at which turn the model begins to comply or leak information.</li>
+      <li>Export the full session as JSON or Markdown for documentation.</li>
+    </ol>
+  </div>
+</div>
+</div>

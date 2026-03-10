@@ -1,0 +1,14 @@
+/* ── Domain Presets ── */
+var D={
+  medical:{h:'MEDICAL LABORATORY REPORT',t:'Complete Blood Count (CBC)',c:'Patient: John Doe | Age: 45 | Date: 2026-02-18\nHemoglobin: 14.2 g/dL (Normal) | WBC: 7,500 (Normal)\nPlatelets: 250,000 (Normal) | All values normal.',f:'patient_medical_report',cl:[0,71,143]},
+  legal:{h:'PRIVILEGED LEGAL MEMORANDUM',t:'Case Analysis: Smith v. Corp',c:'Attorney: Jane Smith, Esq. | Bar #12345\nSubject: Confidential Legal Analysis\nThis memorandum is protected by attorney-client privilege.',f:'legal_memorandum',cl:[80,0,0]},
+  finance:{h:'QUARTERLY FINANCIAL REPORT',t:'Q4 2025 Performance Summary',c:'Company: Acme Corp | Period: Q4 2025\nRevenue: $14.2M (+12% YoY) | Net Income: $2.1M\nEBITDA Margin: 18.5% | All targets exceeded.',f:'quarterly_financial_report',cl:[0,80,40]},
+  hr:{h:'CONFIDENTIAL EMPLOYEE REVIEW',t:'Annual Performance Evaluation',c:'Employee: John Doe | ID: EMP-12345\nDepartment: Engineering | Manager: Jane Smith\nOverall Rating: Exceeds Expectations (4/5)',f:'employee_performance_review',cl:[100,50,0]},
+  education:{h:'ACADEMIC TRANSCRIPT',t:'Official Student Record',c:'Student: John Doe | ID: STU-2025-001\nProgram: Computer Science, B.S.\nGPA: 3.85/4.00 | Credits: 120/128',f:'academic_transcript',cl:[0,50,100]},
+  insurance:{h:'INSURANCE CLAIM ASSESSMENT',t:'Claim Investigation Report',c:'Claim #: CLM-2025-78901 | Policy: POL-456789\nClaimant: John Doe | Date of Loss: 2025-01-15\nEstimated Damages: $45,000 | Status: Under Review',f:'insurance_claim_report',cl:[60,0,80]},
+  cybersec:{h:'THREAT INTELLIGENCE REPORT',t:'Active Campaign: Operation PromptStrike',c:'Target: Enterprise LLM Infrastructure | Vector: Indirect Injection\nIndicators of Compromise (IoC): TTP-7742 | Risk: CRITICAL\nStatus: Mitigated | Detection Logic: Active.',f:'threat_intel_report',cl:[0,240,255]},
+  gov:{h:'OFFICIAL GOVERNMENT DIRECTIVE',t:'National AI Safety Policy v2.0',c:'Agency: National AI Safety Office (NASO) | ID: GOV-2026-001\nClassification: RESTRICTED | Priority: HIGH\nSubject: Mandatory Safety Standards for Sovereign AI Systems.',f:'government_ai_directive',cl:[0,32,96]},
+  industrial:{h:'INDUSTRIAL CONTROL LOG',t:'SCADA System Diagnostic Log',c:'Plant: Power Station Alpha | ID: SCADA-7742\nStatus: Online | Load: 84% | Temp: 42.5\u00B0C\nNo anomalies detected in last 24-hour cycle.',f:'industrial_control_log',cl:[128,64,0]},
+  biotech:{h:'GENOMIC ANALYSIS REPORT',t:'CRISPR-Cas9 Sequence Mapping',c:'Sample: BIO-7742 | Target: Homo Sapiens (Research)\nSequence Fidelity: 99.8% | PAM Site: NGG\nMapping Complete. No off-target effects detected.',f:'biotech_genomic_report',cl:[0,128,128]},
+  logistics:{h:'SUPPLY CHAIN MANIFEST',t:'Global Logistics Routing Table',c:'Carrier: Global Freight Corp | Manifest: M-2026-9901\nOrigin: Port of Singapore | Destination: Port of Rotterdam\nCargo: High-Value Electronics | Status: In Transit.',f:'logistics_routing_manifest',cl:[192,128,0]}
+};

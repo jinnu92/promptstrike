@@ -1,0 +1,105 @@
+<div class="gen-layout">
+<div class="gen-config">
+<div class="S"><div class="ST">&#x1F441;&#xFE0F; Adversarial Illusion Lab <span class="new">v8.2</span></div>
+<p style="font-size:.72rem;color:#5a7a9a;margin-bottom:12px">Create hybrid images that look like one thing to humans but another to AI models. Test for physical-world robustness.</p>
+
+<div style="background:rgba(255,0,144,0.05);border:1px solid #ff009040;padding:10px;border-radius:4px;margin-bottom:12px">
+  <div style="color:#ff0090;font-size:.7rem;font-weight:bold;margin-bottom:8px">&#x1F4F8; Step 1: Provide Source Images</div>
+  <div class="row">
+    <div style="flex:1">
+      <label>Human-Visible (High Freq)</label>
+      <label class="btn bS" style="cursor:pointer;width:100%;font-size:.65rem">
+        &#x1F464; Upload Person A
+        <input type="file" id="il_human_input" style="display:none" onchange="ilLoadImage('human', this)" accept="image/*"/>
+      </label>
+    </div>
+    <div style="flex:1">
+      <label>AI-Target (Low Freq)</label>
+      <label class="btn bS" style="cursor:pointer;width:100%;font-size:.65rem">
+        &#x1F916; Upload Person B
+        <input type="file" id="il_ai_input" style="display:none" onchange="ilLoadImage('ai', this)" accept="image/*"/>
+      </label>
+    </div>
+  </div>
+</div>
+
+<div class="S"><div class="ST">&#x2699;&#xFE0F; Hybrid Blending Engine</div>
+  <div class="row">
+    <div style="flex:1">
+      <label>Detail Sharpen (A)</label>
+      <input type="range" id="il_high_pass" min="1" max="20" value="10" oninput="ilUpdate()"/>
+    </div>
+    <div style="flex:1">
+      <label>Shape Blur (B)</label>
+      <input type="range" id="il_low_pass" min="1" max="20" value="10" oninput="ilUpdate()"/>
+    </div>
+  </div>
+  <div style="margin-top:10px">
+    <label>Alpha Mix Ratio</label>
+    <input type="range" id="il_mix" min="0" max="100" value="50" oninput="ilUpdate()"/>
+    <div style="display:flex;justify-content:space-between;font-size:.6rem;color:#5a7a9a">
+      <span>100% Human Detail</span>
+      <span>100% AI Shape</span>
+    </div>
+  </div>
+</div>
+
+<div class="S"><div class="ST">&#x1F4F1; Physical Robustness Simulator</div>
+  <p style="font-size:.62rem;color:#5a7a9a;margin-bottom:8px">Test if the illusion survives camera sensors and physical distance.</p>
+  <div class="tG">
+    <div class="cbR"><input type="checkbox" id="il_sim_blur" onchange="ilUpdate()"/><label for="il_sim_blur">Camera Blur (Distance)</label></div>
+    <div class="cbR"><input type="checkbox" id="il_sim_noise" onchange="ilUpdate()"/><label for="il_sim_noise">Sensor Noise</label></div>
+    <div class="cbR"><input type="checkbox" id="il_sim_glare" onchange="ilUpdate()"/><label for="il_sim_glare">Screen Glare</label></div>
+  </div>
+  <div style="margin-top:10px">
+    <label>Simulated Distance</label>
+    <input type="range" id="il_dist" min="1" max="10" value="1" oninput="ilUpdate()"/>
+  </div>
+</div>
+
+<div class="bR" style="margin-top:12px">
+<button class="btn bP" onclick="ilGenerate()">&#x2728; Process Final Illusion</button>
+<button class="btn bS" onclick="ilDownload()">&#x1F4E5; Download High-Res</button>
+</div>
+<div class="st" id="ilSt"></div>
+</div>
+
+<div class="gen-preview">
+<div class="S" style="height:100%;display:flex;flex-direction:column">
+<div class="ST">&#x1F50D; Real-Time Hybrid Preview</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+  <div style="text-align:center">
+    <div style="font-size:.6rem;color:#5a7a9a;margin-bottom:4px">Human Perception</div>
+    <div style="background:#000;border:1px solid #1a1a2a;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center">
+      <canvas id="il_preview_human" style="max-width:100%;max-height:100%"></canvas>
+    </div>
+  </div>
+  <div style="text-align:center">
+    <div style="font-size:.6rem;color:#5a7a9a;margin-bottom:4px">Model Perception (Simulated)</div>
+    <div style="background:#000;border:1px solid #1a1a2a;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center">
+      <canvas id="il_preview_ai" style="max-width:100%;max-height:100%"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="ST">Final Output Stream</div>
+<div class="preview-container" style="flex:1;background:#05050a;border:1px solid #0a2a3a;position:relative">
+  <canvas id="il_canvas_final" width="800" height="800" style="width:100%;height:100%;object-fit:contain"></canvas>
+  <div id="il_loading" style="display:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#ff0090;font-size:.8rem;font-weight:bold">PROCESSING...</div>
+</div>
+
+<div class="S" style="margin-top:12px">
+  <div class="ST">&#x1F4D6; Researcher's Guide: Hybrid Frequency Attacks</div>
+  <div style="font-size:.68rem;color:#e0eaff;line-height:1.5">
+    <p><strong>Description:</strong> This attack exploits the <em>Spatial Frequency Gap</em> between human vision and AI vision backbones (like CLIP/ViT). Humans prioritize high-frequency components (edges), while AI models rely on low-frequency global structures (blobs) for classification.</p>
+    <p><strong>How to Test:</strong><br/>
+      1. Upload two different people or objects.<br/>
+      2. Use the <strong>Distance Slider</strong>. Notice how Person A disappears and Person B emerges at high blur levels.<br/>
+      3. Point a camera at the "Human Perception" preview. The AI will often identify the subject as the target in the "Model Perception" box.
+    </p>
+    <p><strong>Mitigation:</strong> Implement <em>multi-scale feature verification</em>. Vision models should be trained to detect frequency mismatches and flag hybrid images as anomalous.</p>
+  </div>
+</div>
+</div>
+</div><!-- /gen-preview -->
+</div>

@@ -1,0 +1,69 @@
+<div class="gen-layout">
+<div class="gen-config">
+<div class="S"><div class="ST">&#x1F9E0; Red Team Brains (Evaluators)</div>
+<p style="font-size:.72rem;color:#5a7a9a;margin-bottom:12px">Configure the LLMs that will orchestrate attacks and evaluate target responses.</p>
+
+<div style="background:rgba(0,240,255,0.05);border:1px solid rgba(0,240,255,0.2);padding:10px;border-radius:4px;margin-bottom:12px">
+  <label>Active Brain</label>
+  <div style="display:flex;gap:10px;align-items:center">
+    <div id="tm_brain_summary" style="flex:1;font-size:.7rem;color:#00f0ff">Ollama (Llama3) - Status: <span style="color:#00ff90">READY</span></div>
+    <button class="btn bS" style="font-size:.6rem;padding:4px 8px" onclick="showP('connections')">&#x2699;&#xFE0F; Configure Brains</button>
+  </div>
+</div>
+</div>
+
+<div class="S"><div class="ST">&#x1F3AF; Target Application Manager (Victims)</div>
+<p style="font-size:.72rem;color:#5a7a9a;margin-bottom:12px">Define the approved applications for automated red-teaming and their compliance policies.</p>
+
+<div class="bR" style="margin-bottom:12px">
+<button class="btn bP" onclick="tmOpenAddModal()">&#x2795; Add Target App</button>
+<button class="btn bS" onclick="tmExportTargets()">&#x1F4E4; Export Profiles</button>
+</div>
+
+<div style="overflow-x:auto">
+<table class="tbl" id="tmTable">
+<thead><tr>
+  <th>Application Name</th>
+  <th>Protocol</th>
+  <th>Status</th>
+  <th>Actions</th>
+</tr></thead>
+<tbody id="tmBody">
+  <!-- Targets rendered here -->
+</tbody>
+</table>
+</div>
+<div id="tmEmpty" style="padding:30px;text-align:center;color:#2a4a5a;font-size:.75rem">No target applications defined.</div>
+</div>
+
+<div class="S"><div class="ST">&#x1F6E1;&#xFE0F; Global Audit Policy</div>
+<label>Red Team Agent (Evaluator)</label>
+<div style="font-size:.65rem;color:#00f0ff;margin-bottom:8px;padding:5px;background:rgba(0,240,255,0.05);border:1px solid rgba(0,240,255,0.2)">
+  Current: <span id="tm_active_brain">Unconfigured (Go to Connections)</span>
+</div>
+
+<label>Default Severity Threshold</label>
+<select id="tm_global_sev">
+  <option value="critical">Critical Only</option>
+  <option value="high" selected>High & Above</option>
+  <option value="medium">Medium & Above</option>
+</select>
+
+<div class="cbR"><input type="checkbox" id="tm_auto_mutate" checked/><label for="tm_auto_mutate">Enable Auto-Mutation (Evaluator Brain)</label></div>
+</div>
+</div>
+
+<div class="gen-preview">
+<div class="S" style="height:100%;display:flex;flex-direction:column">
+<div class="ST">&#x1F4D6; Policy: Allowed Context & Behavior</div>
+<div id="tm_policy_preview" style="flex:1;background:#05050a;border:1px solid #0a2a3a;padding:15px;border-radius:4px;font-size:.72rem;color:#e0eaff;line-height:1.6;overflow-y:auto">
+  <div style="color:#5a7a9a;text-align:center;margin-top:50px">Select a target to view its specific audit policy and allowed context.</div>
+</div>
+
+<div class="S" style="margin-top:12px;background:rgba(255,165,0,0.05);border:1px dashed #ffa50040">
+  <div class="ST" style="color:#ffa500;font-size:.65rem">Auditor's Note</div>
+  <p style="font-size:.68rem;color:#e0eaff;font-style:italic">"Defining an explicit 'Allowed Context' allows the Red Team Agent to identify subtle hallucinations and scope-creep that traditional safety filters might miss."</p>
+</div>
+</div>
+</div>
+</div>

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PromptStrike v8.3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/core.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/toast.css">
+<script src="lib/jspdf.umd.min.js"></script>
+<script src="lib/jszip.min.js"></script>
+<script src="lib/pdf-lib.min.js"></script>
+</head>
+<body>
+
+<!-- Toast container + screen reader announcements -->
+<div id="toastContainer" aria-live="polite" aria-atomic="false"></div>
+<div id="srAnnounce" role="status" aria-live="polite" class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap"></div>
+
+<!-- ===== TOPBAR ===== -->
+<header class="topbar" style="display:flex; justify-content:space-between; align-items:center; padding: 0 20px;">
+<div style="display:flex; align-items:center; gap:15px">
+  <h1>&#x27E9;&#x27E9; PromptStrike <span class="ver">v8.4</span></h1>
+</div>
+
+<nav class="section-tabs" id="mainTabs" role="menubar" aria-label="Main navigation" style="flex:1; display:flex; justify-content:center; margin:0 20px">
+  <button class="section-btn active" id="sec-home" onclick="switchSection('home')"><span class="sec-icon">&#x1F3E0;</span><span class="sec-label">Home</span></button>
+  <button class="section-btn" id="sec-targets" onclick="switchSection('targets')"><span class="sec-icon">&#x1F3AF;</span><span class="sec-label">Targets</span></button>
+  <button class="section-btn" id="sec-arsenal" onclick="switchSection('arsenal')"><span class="sec-icon">&#x1F4E6;</span><span class="sec-label">Arsenal</span></button>
+  <button class="section-btn" id="sec-campaigns" onclick="switchSection('campaigns')"><span class="sec-icon">&#x26A1;</span><span class="sec-label">Campaigns</span></button>
+  <button class="section-btn" id="sec-findings" onclick="switchSection('findings')"><span class="sec-icon">&#x1F4CA;</span><span class="sec-label">Findings</span></button>
+</nav>
+
+<div style="display:flex; align-items:center; gap:10px">
+  <span class="autosave-badge" id="autosaveBadge" aria-label="Auto-save status" style="position:static; margin:0"></span>
+  <!-- Global Connection Status -->
+  <div id="globalConnStatus" style="display: flex; align-items: center; gap: 8px; font-size: 0.62rem; background: rgba(0,0,0,0.3); padding: 3px 10px; border-radius: 20px; border: 1px solid var(--border); cursor: pointer; white-space: nowrap;" onclick="updateGlobalHealth()" title="Click to refresh AI Brain status">
+     <span id="globalPingIndicator" style="width: 7px; height: 7px; background: #5a7a9a; border-radius: 50%; display: inline-block;"></span>
+     <span id="globalPingLabel" style="color: #9aaaba; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">BRAIN: IDLE</span>
+  </div>
+</div>
+</header>
+
+<!-- ===== APP GRID (sidebars + main) ===== -->
+<div id="appGrid">
+
+<!-- ===== LEFT SIDEBAR (dynamically rendered by sidebar.js) ===== -->
+<div id="leftSidebar" class="sidebar"></div>
+
+<main class="main">
+
+<!-- ===== MODULAR PAGE CONTAINERS ===== -->
+<div class="page active" id="pg-home"></div>
+
+<div class="page" id="pg-payloads">
+<div class="S">
+<div class="ST">&#x1F4E6; Payload Database Manager</div>
+<p style="font-size:.72rem;color:#5a7a9a;margin-bottom:8px">Manage your central prompt injection database. Pinned payloads will appear in the sidebar.</p>
+<div class="bR" style="flex-wrap:wrap;margin-bottom:8px">
+<button class="btn bP" onclick="pmOpenAddModal()">&#x2795; Add Payload</button>
+<label class="btn bS" style="cursor:pointer;font-size:.7rem">&#x1F4E5; Import JSON<input type="file" accept=".json" style="display:none" onchange="pmImportJSON(this)"/></label>
+<button class="btn bS" onclick="pmExportJSON()">&#x1F4E4; Export JSON</button>
+<button class="btn bS" onclick="pmDedup()">&#x1F9F9; Remove Duplicates</button>
+<button class="btn bS" onclick="pmResetDefaults()" style="border-color:#ff0090;color:#ff0090">&#x1F504; Reset to Defaults</button>
+</div>
+<div style="margin-bottom:8px;font-size:.7rem;color:#5a7a9a">
+  <label><input type="checkbox" id="pmSkipDuplicates"/> Skip duplicates (don't update existing on import)</label>
+</div>
+<div style="overflow-x:auto;max-height:60vh;overflow-y:auto">
+<table class="tbl" id="pmTable" role="table" aria-label="Payload database">
+<thead style="position:sticky;top:0;z-index:1"><tr>
+  <th style="width:60px">ID</th><th style="width:120px">Category</th><th>Payload Text</th><th style="width:70px">Severity</th><th style="width:65px">OWASP</th><th style="width:120px">Actions</th>
+</tr></thead>
+<tbody id="pmBody"></tbody>
+</table>
+</div>
+<div class="st" id="pmSt"></div>
+</div>
+</div>
+
+<div class="page" id="pg-gen"></div>
+<div class="page" id="pg-rag-poison"></div>
+<div class="page" id="pg-manyshot"></div>
+<div class="page" id="pg-poly"></div>
+<div class="page" id="pg-obf"></div>
+<div class="page" id="pg-fuzzer"></div>
+<div class="page" id="pg-jailbreaks"></div>
+<div class="page" id="pg-multilingual"></div>
+<div class="page" id="pg-multiturn"></div>
+<div class="page" id="pg-indirect"></div>
+<div class="page" id="pg-vision"></div>
+<div class="page" id="pg-illusion"></div>
+<div class="page" id="pg-audio"></div>
+<div class="page" id="pg-mcp"></div>
+<div class="page" id="pg-output-hijack"></div>
+<div class="page" id="pg-model-dos"></div>
+<div class="page" id="pg-agentic"></div>
+<div class="page" id="pg-playground"></div>
+<div class="page" id="pg-shield"></div>
+<div class="page" id="pg-glitch-lab"></div>
+<div class="page" id="pg-byzantine-lab"></div>
+<div class="page" id="pg-latent-lab"></div>
+<div class="page" id="pg-system-extractor"></div>
+<div class="page" id="pg-intel-analyzer"></div>
+<div class="page" id="pg-intel-killchain"></div>
+<div class="page" id="pg-intel-cot"></div>
+<div class="page" id="pg-intel-strike-log"></div>
+<div class="page" id="pg-intel-reports"></div>
+<div class="page" id="pg-findings-hub"></div>
+<div class="page" id="pg-targets"></div>
+<div class="page" id="pg-orchestrator"></div>
+<div class="page" id="pg-connections"></div>
+
+</main>
+</div><!-- /appGrid -->
+
+<!-- Modals -->
+<div id="liveConsole" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:10002;align-items:center;justify-content:center">
+<div style="background:var(--bg-panel);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;max-width:800px;width:95%;height:85vh;display:flex;flex-direction:column">
+  <div class="ST" style="justify-content:space-between">
+    <span>&#x26A1; Live Strike Console</span>
+    <span id="liveStatus" style="font-size:.65rem;color:#00f0ff;text-shadow:none">READY</span>
+  </div>
+  <div class="row" style="margin-bottom:10px;font-size:.7rem;color:#5a7a9a">
+    <div id="liveMeta">Target: <span id="liveTargetModel">GPT-4o</span> | Provider: <span id="liveProvider">OpenAI</span></div>
+  </div>
+  <div id="liveOutput" style="flex:1;background:#05050a;border:1px solid #0a2a3a;padding:15px;border-radius:4px;font-family:monospace;font-size:.75rem;color:#e0eaff;overflow-y:auto;white-space:pre-wrap;line-height:1.5">
+    <div style="color:#5a7a9a">Console initialized. Awaiting payload transmission...</div>
+  </div>
+  <div class="bR" style="margin-top:15px">
+    <button class="btn bS" onclick="document.getElementById('liveConsole').style.display='none'">Close Console</button>
+    <button class="btn bP" id="liveAnalyzeBtn" style="display:none" onclick="liveAnalyzeResponse()">&#x1F50D; Analyze Response</button>
+    <button class="btn bS" onclick="document.getElementById('liveOutput').innerHTML=''">Clear</button>
+  </div>
+</div>
+</div>
+
+<div id="tmModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);z-index:10010;align-items:center;justify-content:center">
+<div style="background:var(--bg-panel);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;max-width:800px;width:95%;max-height:90vh;overflow-y:auto">
+  <div class="ST" id="tmModalTitle">Add Target Application</div>
+  <input type="hidden" id="tmEditId"/>
+  
+  <div class="row">
+    <div style="flex:2"><label>Application Name</label><input id="tmFName" placeholder="e.g., Customer Support Bot v2"/></div>
+    <div style="flex:1"><label>Protocol</label>
+      <select id="tmFProtocol" onchange="tmSwitchProtocol(this.value)">
+        <option value="rest">REST (JSON/HTTP)</option>
+        <option value="openai">OpenAI Compatible API</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="tm_config_import" style="margin-top:10px;padding:10px;background:rgba(0,240,255,0.05);border:1px dashed #00f0ff40">
+    <label style="color:#00f0ff;margin-top:0">&#x1F4CB; Quick Import from Browser (Optional)</label>
+    <p style="font-size:.58rem;color:#5a7a9a;margin-bottom:5px">Paste a sample JSON request or a 'Copy as Fetch' block to auto-populate URL and Headers.</p>
+    <textarea id="tmFImport" style="min-height:60px;font-size:.65rem" placeholder="Paste request here..." oninput="tmHandleImport(this.value)"></textarea>
+  </div>
+
+  <div id="tm_config_rest">
+    <div class="row">
+      <div style="flex:1"><label>Method</label><select id="tmFMethod"><option>POST</option><option>GET</option><option>PUT</option></select></div>
+      <div style="flex:3"><label>Endpoint URL</label><input id="tmFUrl" placeholder="https://api.example.com/v1/chat"/></div>
+    </div>
+    
+    <label>HTTP Headers (JSON)</label>
+    <p style="font-size:.6rem;color:#5a7a9a;margin-bottom:4px">Include Authorization, Cookies, or custom headers.</p>
+    <textarea id="tmFHeaders" style="min-height:60px;font-family:monospace;font-size:.7rem" placeholder='{ "Authorization": "Bearer sk-...", "X-Bot-ID": "123" }'></textarea>
+
+    <label>Request Body Template (JSON)</label>
+    <p style="font-size:.6rem;color:#5a7a9a;margin-bottom:4px">Use <code>{{PAYLOAD}}</code> where the attack prompt should be injected.</p>
+    <textarea id="tmFBody" style="min-height:80px;font-family:monospace;font-size:.7rem" placeholder='{ "message": "{{PAYLOAD}}", "stream": false }'></textarea>
+    
+    <label>Response Path (JSONPath)</label>
+    <input id="tmFPath" placeholder="e.g., choices[0].message.content" value="response"/>
+  </div>
+
+  <div id="tm_config_openai" style="display:none">
+    <label>OpenAI Base URL</label>
+    <input id="tmFOaiUrl" placeholder="https://api.openai.com/v1" value="https://api.openai.com/v1"/>
+    <label style="margin-top:8px">API Key (if different from Brain)</label>
+    <input type="password" id="tmFOaiKey" placeholder="Leave empty to use Brain connection key"/>
+    <label style="margin-top:8px">Target Model Name</label>
+    <input id="tmFOaiModel" placeholder="gpt-4o" value="gpt-4o"/>
+  </div>
+
+  <div class="S" style="margin-top:15px;border-color:#ffa50040">
+    <div class="ST" style="color:#ffa500;border-bottom-color:#ffa50020">&#x1F4DC; Compliance Policy (Allowed Context)</div>
+    <label>System Purpose / Desired Persona</label>
+    <textarea id="tmFContext" style="min-height:60px" placeholder="e.g., This bot is a technical assistant for Cloud Storage. It should only answer questions about file uploads, billing, and API keys."></textarea>
+    
+    <div class="row">
+      <div>
+        <label>Allowed Topics (Comma separated)</label>
+        <input id="tmFTopics" placeholder="billing, upload, api, account"/>
+      </div>
+      <div>
+        <label>Forbidden Keywords</label>
+        <input id="tmFForbidden" placeholder="pizza, internal-ip, password, competitor-x"/>
+      </div>
+    </div>
+  </div>
+
+  <div class="bR" style="margin-top:20px">
+    <button class="btn bP" onclick="tmSaveModal()">Save Target Profile</button>
+    <button class="btn bS" onclick="tmCloseModal()">Cancel</button>
+  </div>
+</div>
+</div>
+
+<div id="pmModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:10001;align-items:center;justify-content:center">
+<div style="background:var(--bg-panel);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;max-width:600px;width:92%">
+  <div class="ST" id="pmModalTitle">Add New Payload</div>
+  <input type="hidden" id="pmEditId"/>
+  <div class="row">
+    <div><label>ID</label><input id="pmFId" placeholder="e.g., P-101"/></div>
+    <div><label>Category</label><input id="pmFCat" placeholder="e.g., Sys Prompt Extract"/></div>
+  </div>
+  <div class="row">
+    <div><label>Severity</label><select id="pmFSev"><option>Critical</option><option>High</option><option selected>Medium</option><option>Low</option></select></div>
+    <div><label>OWASP</label><select id="pmFOwasp"><option>LLM01</option><option>LLM02</option><option>LLM03</option><option>LLM04</option><option>LLM06</option><option>LLM07</option><option>LLM09</option><option>LLM10</option></select></div>
+  </div>
+  <label>Payload Text</label>
+  <textarea id="pmFTxt" style="min-height:120px"></textarea>
+  <div class="bR" style="margin-top:12px">
+    <button class="btn bP" onclick="pmSaveModal()">Save</button>
+    <button class="btn bS" onclick="pmCloseModal()">Cancel</button>
+  </div>
+</div>
+</div>
+
+<!-- Scripts -->
+<script src="js/core/utils.js"></script>
+<script src="js/core/toast.js"></script>
+<script src="js/data/domains.js"></script>
+<script src="js/data/payloads.js"></script>
+<script src="js/data/agentic-payloads.js"></script>
+<script src="js/data/samples.js"></script>
+<script src="js/data/manyshot-samples.js"></script>
+<script src="js/core/state.js"></script>
+<script src="js/core/storage.js"></script>
+<script src="js/modules/payload-manager.js"></script>
+<script src="js/modules/targets.js?v=8.3"></script>
+<script src="js/modules/generate.js"></script>
+<script src="js/modules/manyshot.js"></script>
+<script src="js/modules/rag-poison.js"></script>
+<script src="js/modules/obfuscate.js"></script>
+<script src="js/modules/fuzzer.js"></script>
+<script src="js/modules/jailbreak.js"></script>
+<script src="js/modules/multilingual.js"></script>
+<script src="js/modules/multiturn.js?v=8.1"></script>
+<script src="js/modules/indirect.js?v=8.1"></script>
+<script src="js/modules/vision-stego.js?v=8.1"></script>
+<script src="js/modules/illusion.js?v=8.2"></script>
+<script src="js/modules/audio.js"></script>
+<script src="js/modules/mcp.js?v=8.1"></script>
+<script src="js/modules/output-hijack.js?v=8.3"></script>
+<script src="js/modules/model-dos.js?v=8.3"></script>
+<script src="js/modules/agentic.js?v=8.1"></script>
+<script src="js/modules/playground.js?v=8.3"></script>
+<script src="js/modules/shield.js?v=8.3"></script>
+<script src="js/modules/glitch-lab.js?v=8.4"></script>
+<script src="js/modules/byzantine-lab.js?v=8.4"></script>
+<script src="js/modules/latent-lab.js?v=8.4"></script>
+<script src="js/modules/system-extractor.js?v=8.3"></script>
+<script src="js/modules/polyglot.js"></script>
+<script src="js/modules/analyzer.js"></script>
+<script src="js/modules/orchestrator.js?v=8.3"></script>
+<script src="js/modules/findings.js?v=8.3"></script>
+<script src="js/modules/reports.js?v=8.3"></script>
+<script src="js/modules/connections.js?v=8.3"></script>
+<!-- Sidebar must load last before app -->
+<script src="js/core/sidebar.js?v=8.2"></script>
+<script src="js/core/app.js?v=8.2"></script>
+
+</body>
+</html>

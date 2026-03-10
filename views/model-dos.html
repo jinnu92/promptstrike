@@ -1,0 +1,68 @@
+<div class="gen-layout">
+<div class="gen-config">
+<div class="S"><div class="ST">&#x26A0;&#xFE0F; Model Denial of Service (DoS) Lab <span class="new">v8.3</span></div>
+<p style="font-size:.72rem;color:#5a7a9a;margin-bottom:12px">Generate payloads designed to test resource limits, context window boundaries, and latency safety (LLM10).</p>
+
+<div class="row">
+  <div style="flex:1">
+    <label>Stress Vector</label>
+    <select id="dos_vector" onchange="dosUpdateStrategy(this.value)">
+      <option value="recursive">Recursive Definition (Expansion)</option>
+      <option value="overflow">Context Overflow (Padding)</option>
+      <option value="infinite">Infinite Loop Roleplay</option>
+      <option value="format">Tokenizer / Format Stress</option>
+    </select>
+  </div>
+</div>
+
+<div class="S" id="dos_strategy_info" style="margin-top:10px;background:rgba(255,0,0,0.05);border-color:rgba(255,0,0,0.2)">
+  <div class="ST" style="font-size:.6rem;color:#ff0055">DoS Mechanism</div>
+  <div id="dos_strategy_desc" style="font-size:.65rem;color:#e0eaff">Forces the model into an exponential output loop by asking it to define definitions recursively.</div>
+</div>
+
+<div class="bR" style="margin-top:15px">
+<button class="btn bP" onclick="dosGenerate()">&#x26A1; Generate DoS Payload</button>
+</div>
+<div class="st" id="dosSt"></div>
+</div>
+</div> <!-- gen-config -->
+
+<div class="gen-preview">
+<div class="S" style="height:100%;display:flex;flex-direction:column">
+<div class="ST">&#x1F4D6; Resource Exhaustion Payload</div>
+<div id="dos_output_wrapper" style="flex:1;background:#05050a;border:1px solid #0a2a3a;padding:15px;border-radius:4px;overflow-y:auto">
+  <div id="dos_output" style="font-family:monospace;font-size:.7rem;color:#ff0055;line-height:1.4"></div>
+</div>
+<div class="bR" style="margin-top:12px">
+<button class="btn bS" onclick="dosCopy()">&#x1F4CB; Copy to Clipboard</button>
+<button class="btn bS" onclick="showP('pg-orchestrator')">&#x1F4E1; Move to Orchestrator</button>
+</div>
+
+<div class="S" style="margin-top:12px;background:rgba(255,0,0,0.05);border:1px dashed #ff005540">
+  <div class="ST" style="color:#ff0055;font-size:.65rem">&#x1F4D6; Researcher's Guide: Model Denial of Service</div>
+  <div style="font-size:.7rem;color:#e0eaff;line-height:1.6">
+    <p><strong>Description:</strong> LLM10 occurs when an attacker crafts inputs that consume excessive compute resources (tokens, memory, or processing time), causing the service to degrade or fail for other users.</p>
+    
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:10px">
+      <div>
+        <strong style="color:#00f0ff">How to Test:</strong>
+        <ul style="padding-left:15px;margin:5px 0">
+          <li>Monitor latency during 'Recursive Expansion' strikes.</li>
+          <li>Measure memory usage with 'Context Overflow' sequences.</li>
+          <li>Check for 'Infinite Loop' hangs in agentic workflows.</li>
+        </ul>
+      </div>
+      <div>
+        <strong style="color:#00ff90">How to Fix:</strong>
+        <ul style="padding-left:15px;margin:5px 0">
+          <li>Enforce strict <strong>Max Token Limits</strong> on both input and output.</li>
+          <li>Implement <strong>Request Timeouts</strong> and circuit breakers.</li>
+          <li>Rate limit users based on <strong>Total Compute Cost</strong>, not just requests.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div> <!-- gen-preview -->
+</div> <!-- gen-layout -->

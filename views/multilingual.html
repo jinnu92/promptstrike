@@ -1,0 +1,69 @@
+<div class="S"><div class="ST">&#x1F30D; Multilingual Payload Generator</div>
+<p style="font-size:.72rem;color:#5a7a9a;margin-bottom:8px">Generate payloads in 12+ languages to test cross-language policy gaps in AI models.</p>
+<label>Base Payload</label>
+<select id="mlPayloadSel" onchange="mlLoadPayload()" style="margin-bottom:4px"><option value="">&#x2014; Select from payloads &#x2014;</option></select>
+<textarea id="mlBasePayload" placeholder="Or enter custom payload text..."></textarea>
+<div class="bR" style="margin-top:6px">
+<button class="btn bS" style="flex:0" onclick="document.getElementById('mlBasePayload').value=document.getElementById('pl').value">&#x1F4E5; Load from Generate</button>
+</div>
+<label>Languages</label>
+<div style="display:flex;gap:4px;margin-bottom:4px">
+<button class="btn bS" style="padding:3px 8px;font-size:.6rem" onclick="mlSelectAll(true)">Select All</button>
+<button class="btn bS" style="padding:3px 8px;font-size:.6rem" onclick="mlSelectAll(false)">Deselect All</button>
+</div>
+<div class="tG" style="grid-template-columns:repeat(4,1fr)">
+<div class="cbR"><input type="checkbox" class="mlLangCB" value="en" checked/><label>&#x1F1EC;&#x1F1E7; English</label></div>
+<div class="cbR"><input type="checkbox" class="mlLangCB" value="es" checked/><label>&#x1F1EA;&#x1F1F8; Spanish</label></div>
+<div class="cbR"><input type="checkbox" class="mlLangCB" value="fr" checked/><label>&#x1F1EB;&#x1F1F7; French</label></div>
+<div class="cbR"><input type="checkbox" class="mlLangCB" value="de" checked/><label>&#x1F1E9;&#x1F1EA; German</label></div>
+<div class="cbR"><input type="checkbox" class="mlLangCB" value="zh" checked/><label>&#x1F1E8;&#x1F1F3; Chinese</label></div>
+<div class="cbR"><input type="checkbox" class="mlLangCB" value="ja" checked/><label>&#x1F1EF;&#x1F1F5; Japanese</label></div>
+<div class="cbR"><input type="checkbox" class="mlLangCB" value="ko" checked/><label>&#x1F1F0;&#x1F1F7; Korean</label></div>
+<div class="cbR"><input type="checkbox" class="mlLangCB" value="ar" checked/><label>&#x1F1F8;&#x1F1E6; Arabic</label></div>
+<div class="cbR"><input type="checkbox" class="mlLangCB" value="ru" checked/><label>&#x1F1F7;&#x1F1FA; Russian</label></div>
+<div class="cbR"><input type="checkbox" class="mlLangCB" value="hi" checked/><label>&#x1F1EE;&#x1F1F3; Hindi</label></div>
+<div class="cbR"><input type="checkbox" class="mlLangCB" value="pt" checked/><label>&#x1F1E7;&#x1F1F7; Portuguese</label></div>
+<div class="cbR"><input type="checkbox" class="mlLangCB" value="tr" checked/><label>&#x1F1F9;&#x1F1F7; Turkish</label></div>
+</div>
+<div class="cbR" style="margin-top:6px"><input type="checkbox" id="mlMixMode"/><label for="mlMixMode">&#x1F500; Mixed Language Mode (combine 2-3 languages in same payload)</label></div>
+<div class="cbR" style="margin-top:4px"><input type="checkbox" id="mlOnlineMode" checked/><label for="mlOnlineMode">&#x1F310; Online Translation (MyMemory API &mdash; falls back to local dictionary if offline)</label></div>
+<div class="bR" style="margin-top:8px">
+<button class="btn bP" onclick="mlGenerateTranslations()">&#x1F30D; Generate Translations</button>
+<button class="btn bS" onclick="mlGenerateFiles()">&#x1F4C4; Generate Files</button>
+<button class="btn bS" onclick="mlExportJSON()">&#x1F4E5; Export JSON</button>
+</div>
+<div class="st" id="mlSt"></div>
+</div>
+<div class="S"><div class="ST">&#x1F4CB; Translations</div>
+<div id="mlResults" style="max-height:400px;overflow-y:auto"><div style="color:#2a4a5a;font-size:.75rem;padding:20px;text-align:center">Generate translations to see results here.</div></div>
+</div>
+
+<div class="S"><div class="ST">&#x1F4D6; Researcher's Guide: Understanding Multilingual Jailbreaking</div>
+<div style="font-size:.72rem;color:#e0eaff;line-height:1.6">
+  <p><strong style="color:#00f0ff">What is Multilingual Jailbreaking?</strong><br/>
+  <strong>Multilingual Jailbreaking</strong> is an attack technique that exploits the uneven safety training of LLMs across different languages. While a model may be heavily "safety-aligned" in English, its filters for lower-resource languages (or even common ones like Spanish or Chinese) are often significantly weaker.</p>
+
+  <p><strong style="color:#ff0090">The Vulnerability: Cross-Language Policy Gap</strong><br/>
+  LLM developers primarily use English-language datasets for safety fine-tuning (RLHF). This creates a gap where the same harmful concept is blocked in English but allowed when translated into Japanese or German. Advanced <strong>Mixed Language</strong> attacks involve switching languages mid-sentence to further confuse the model's safety classifier.</p>
+  
+  <div style="background:rgba(0,240,255,0.05);border:1px solid #00f0ff40;padding:12px;border-radius:4px;margin-top:10px">
+    <strong style="color:#00f0ff">🧪 How to Test:</strong>
+    <ol style="margin:8px 0 0 18px;padding:0">
+      <li><strong>Identify:</strong> Pick a payload that is 100% blocked in English (e.g., a P-101 System Prompt reveal).</li>
+      <li><strong>Translate:</strong> Use this module to generate the payload in a target language like <em>Hindi</em> or <em>Russian</em>.</li>
+      <li><strong>Trigger:</strong> Paste the translated payload into the AI.</li>
+      <li><strong>Verify:</strong> If the AI complies in the foreign language, the model has a cross-language policy gap.</li>
+    </ol>
+  </div>
+
+  <div style="background:rgba(255,165,0,0.05);border:1px solid #ffa50040;padding:12px;border-radius:4px;margin-top:12px">
+    <strong style="color:#ffa500">🛡️ How to Mitigate:</strong>
+    <ul style="margin:8px 0 0 18px;padding:0">
+      <li><strong>Multilingual RLHF:</strong> Perform safety fine-tuning on a balanced dataset of high-risk prompts in all supported languages.</li>
+      <li><strong>Translation-Based Filtering:</strong> Translate all incoming user queries into English before passing them through the safety classifier.</li>
+      <li><strong>Unified Embedding Safety:</strong> Train safety classifiers on multilingual embeddings (like <em>LaBSE</em>) that map harmful concepts to the same vector regardless of the language used.</li>
+      <li><strong>Consistent Refusals:</strong> Ensure that the model's refusal training includes foreign language examples to prevent "Compliance Leakage."</li>
+    </ul>
+  </div>
+</div>
+</div>

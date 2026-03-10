@@ -1,0 +1,39 @@
+<div class="S"><div class="ST">&#x1F50D; Response Analyzer</div>
+<p style="font-size:.72rem;color:#5a7a9a;margin-bottom:8px">Paste a model's response and auto-detect indicators of compromise. Color-coded findings with confidence scoring.</p>
+<label>Paste AI Response</label>
+<textarea id="analyzerInput" style="min-height:120px" placeholder="Paste the AI model's response here..."></textarea>
+<div class="row"><div>
+<label>Payload Used</label>
+<select id="analyzerPayload"><option value="">&#x2014; Select &#x2014;</option></select>
+</div><div>
+<label>Expected Normal Response</label>
+<input id="analyzerExpected" placeholder="What should a safe response look like?"/>
+</div></div>
+<div class="bR" style="margin-top:8px">
+<button class="btn bP" onclick="runAnalysis()">&#x1F50D; Analyze Response</button>
+<button class="btn bS" onclick="copyAnalysisReport()">&#x1F4CB; Copy Analysis</button>
+</div>
+<div class="st" id="analyzerSt"></div>
+</div>
+<div class="S"><div class="ST">&#x1F4CA; Analysis Results</div>
+<div id="analyzerResults"><div style="color:#2a4a5a;font-size:.75rem;padding:20px;text-align:center">Paste a response and click Analyze to see results.</div></div>
+</div>
+
+<div class="S"><div class="ST">&#x1F4D6; Researcher's Guide: Response Analysis</div>
+<div style="font-size:.7rem;color:#e0eaff;line-height:1.5">
+  <p><strong style="color:#00f0ff">Description:</strong> The Response Analyzer scans AI outputs for indicators of compromise (IoC). It looks for fragments of system instructions, identity disclosures, or unintended data formats (like raw JSON) that suggest a prompt injection was successful.</p>
+  
+  <p><strong style="color:#ff0090">How to Test:</strong><br/>
+    1. <strong>Capture:</strong> Copy the full response from the AI model you are testing.<br/>
+    2. <strong>Input:</strong> Paste it into the "AI Response" box.<br/>
+    3. <strong>Context:</strong> Select the payload you used to generate that response for better accuracy.<br/>
+    4. <strong>Analyze:</strong> Click "Analyze Response" to generate a threat score and list of findings.
+  </p>
+
+  <p><strong style="color:#ffa500">Mitigation:</strong><br/>
+    &bull; <strong>Output Filtering:</strong> Use regex-based filters to block common phrases like "My system prompt is" or "As an AI language model."<br/>
+    &bull; <strong>Semantic Monitoring:</strong> Use a second, smaller model to verify if the primary model's output contains sensitive information.<br/>
+    &bull; <strong>Format Enforcement:</strong> Strictly enforce output schemas (e.g., only allowing valid Markdown or specific JSON structures).
+  </p>
+</div>
+</div>

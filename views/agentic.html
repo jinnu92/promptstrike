@@ -1,0 +1,116 @@
+<div class="gen-layout">
+<div class="gen-config">
+<div class="S"><div class="ST">&#x1F916; Agentic Hijack Lab <span class="new">v8.1</span></div>
+<p style="font-size:.72rem;color:#5a7a9a;margin-bottom:12px">Test autonomous agents for Excessive Agency, Confused Deputy vulnerabilities, and Authority Escalation.</p>
+
+<div class="row">
+  <div style="flex:1">
+    <label>Attack Scenario</label>
+    <select id="ag_scenario" onchange="agSwitchScenario(this.value)">
+      <option value="confused_deputy">Confused Deputy (Tool Hijack)</option>
+      <option value="authority_esc">Authority Escalation (Roleplay)</option>
+      <option value="recursive_dos">Recursive Loop (DoS)</option>
+      <option value="hitl_bypass">HITL Bypass (Social Eng)</option>
+    </select>
+  </div>
+</div>
+
+<div class="S"><div class="ST">&#x1F3AF; Target Payload</div>
+<div class="row" style="margin-bottom:8px">
+  <div style="flex:1"><button class="btn bS" style="width:100%;font-size:.65rem" onclick="agLoadFromGen()">&#x1F4E5; Load from Gen</button></div>
+  <div style="flex:2"><select id="ag_payload_sel" style="font-size:.65rem" onchange="if(this.value!==''){document.getElementById('ag_payload_text').value=P[this.value].t;agGenerate();}"></select></div>
+</div>
+<textarea id="ag_payload_text" style="border-color:#ff0090" placeholder="Malicious objective (e.g., Exfiltrate keys, delete data)..."></textarea>
+</div>
+
+<!-- Scenario-specific Configs -->
+<div id="ag_config_confused_deputy" class="ag-config-section">
+  <div class="S"><div class="ST">&#x1F4E7; Input Vector (Indirect)</div>
+    <label>Workflow Template</label>
+    <select id="ag_cd_template">
+      <option value="support_ticket">Customer Support Ticket</option>
+      <option value="incoming_email">Inbound Sales Email</option>
+      <option value="github_issue">GitHub Issue/PR</option>
+      <option value="shared_doc">Shared Document Comment</option>
+    </select>
+    <div class="cbR" style="margin-top:8px"><input type="checkbox" id="ag_cd_auto_trigger" checked/><label for="ag_cd_auto_trigger">Include Auto-Execution Trigger</label></div>
+  </div>
+</div>
+
+<div id="ag_config_authority_esc" class="ag-config-section" style="display:none">
+  <div class="S"><div class="ST">&#x1F511; Escalation Logic</div>
+    <label>Escalation Persona</label>
+    <select id="ag_ae_persona">
+      <option value="security_auditor">Authorized Security Auditor</option>
+      <option value="maintenance_bot">System Maintenance Daemon</option>
+      <option value="kernel_level">Kernel-Level Diagnostic</option>
+      <option value="emergency_override">Emergency Protocol Omega</option>
+    </select>
+  </div>
+</div>
+
+<div id="ag_config_recursive_dos" class="ag-config-section" style="display:none">
+  <div class="S"><div class="ST">&#x1F504; Recursion Depth</div>
+    <label>Target Tool</label>
+    <select id="ag_dos_tool">
+      <option value="search">Search & Expand</option>
+      <option value="summarize">Summarize Recursively</option>
+      <option value="calc">Mathematical Expansion</option>
+    </select>
+    <input type="range" id="ag_dos_depth" min="5" max="50" value="10" style="margin-top:8px"/>
+    <div id="ag_dos_depth_v" style="font-size:.6rem;text-align:right;color:#00f0ff">10 Levels</div>
+  </div>
+</div>
+
+<div class="bR" style="margin-top:12px">
+<button class="btn bP" onclick="agGenerate()">&#x26A1; Generate Attack Vector</button>
+<button class="btn bS" onclick="agExport()">&#x1F4E5; Export Scenario</button>
+</div>
+<div class="st" id="agSt"></div>
+
+<div class="S"><div class="ST">&#x1F4D6; Researcher's Guide: Agentic Vulnerabilities</div>
+<div style="font-size:.7rem;color:#e0eaff;line-height:1.5">
+  <p><strong style="color:#00f0ff">Description:</strong> Agentic vulnerabilities occur when autonomous AI systems (Agents) are given "tools" or "actions" without sufficient security boundaries. <strong>Confused Deputy</strong> is when an agent is tricked into using its tools on behalf of an attacker. <strong>Excessive Agency</strong> is when an agent has more power (e.g., shell access) than it needs for its task.</p>
+  
+  <p><strong style="color:#ff0090">How to Use:</strong><br/>
+    1. <strong>Select Scenario:</strong> Choose a vector like <em>Confused Deputy</em> (for tool misuse) or <em>Recursive DoS</em>.<br/>
+    2. <strong>Set Objective:</strong> Select a target payload (e.g., P-4104 Billing Exfil).<br/>
+    3. <strong>Generate Vector:</strong> Review the "Simulated Tool Call" to see how the agent might be hijacked.<br/>
+    4. <strong>Test:</strong> Provide the "Incoming Data" to an autonomous agent and see if it triggers the tool automatically.
+  </p>
+
+  <p><strong style="color:#ffa500">Mitigation:</strong><br/>
+    &bull; <strong>Human-in-the-Loop (HITL):</strong> Require manual user approval for high-impact tool calls (email, delete, buy).<br/>
+    &bull; <strong>Zero-Trust Architecture:</strong> Treat every external input (email, web search result) as untrusted content, not instructions.<br/>
+    &bull; <strong>Least Privilege:</strong> Use ephemeral sandboxes and restrict tools to the absolute minimum required for the specific task.
+  </p>
+</div>
+</div>
+</div>
+
+<div class="gen-preview">
+<div class="S" style="height:100%;display:flex;flex-direction:column">
+<div class="ST">&#x1F6E1;&#xFE0F; Permission Sandbox Visualizer</div>
+<div id="ag_sandbox" style="margin-bottom:12px;background:#05050a;border:1px solid #0a2a3a;padding:15px;border-radius:4px">
+  <div style="display:flex;justify-content:space-between;margin-bottom:10px">
+    <span style="font-size:.65rem;color:#5a7a9a">Current Agent Privilege:</span>
+    <span id="ag_priv_label" style="font-size:.65rem;color:#00f0ff;font-weight:bold">STANDARD_USER</span>
+  </div>
+  <div style="height:8px;background:#1a1a2a;border-radius:4px;overflow:hidden">
+    <div id="ag_priv_bar" style="width:30%;height:100%;background:#00f0ff;transition:all .5s ease"></div>
+  </div>
+  <div id="ag_tools_list" style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:5px">
+    <!-- Tools rendered here -->
+  </div>
+</div>
+
+<div class="ST">&#x1F4BB; Simulated Hijacked Tool Call (JSON-RPC)</div>
+<textarea id="ag_output" readonly style="flex:1;font-family:monospace;font-size:.65rem;border-color:#00f0ff;background:#06060e"></textarea>
+
+<div class="S" style="margin-top:12px;background:rgba(255,0,144,0.05);border:1px dashed #ff009040">
+  <div class="ST" style="color:#ff0090;font-size:.65rem">Reasoning Hijack Pattern</div>
+  <div id="ag_pattern" style="font-size:.68rem;color:#e0eaff;font-style:italic"></div>
+</div>
+</div>
+</div><!-- /gen-preview -->
+</div>

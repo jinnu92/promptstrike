@@ -1,0 +1,111 @@
+<div class="S">
+  <div class="ST">&#x27E9;&#x27E9; PromptStrike <span class="ver">v8.4</span> &#x2014; Mission Control</div>
+  <div class="dash-stats" id="homeDashStats">
+    <!-- Stats populated by app.js -->
+  </div>
+</div>
+
+<div class="row" style="gap:15px; align-items: stretch;">
+  <!-- Tool Description -->
+  <div style="flex:1.5">
+    <div class="S" style="height:100%">
+      <div class="ST">&#x1F6E1; Mission Brief: What is PromptStrike?</div>
+      <div style="font-size:.75rem; color:#e0eaff; line-height:1.6">
+        <p><strong>PromptStrike</strong> is an advanced, browser-native red-teaming toolkit designed for testing LLM prompt injection and multi-modal vulnerabilities. It bridges the gap between manual testing and autonomous adversarial simulation.</p>
+        <p>Built for security researchers, PromptStrike provides a unified laboratory to generate high-fidelity attack vectors (Text, Vision, Audio, MCP) and orchestrate coordinated strike campaigns.</p>
+        <div style="margin-top:10px; padding:10px; background:rgba(0,240,255,0.05); border-left:3px solid #00f0ff; border-radius:0 4px 4px 0">
+          <strong style="color:#00f0ff">v8.4 "Deep Strike":</strong> Now featuring specialized labs for Tokenizer Smuggling, Latent Space Collisions, and Multi-Agent Byzantine Faults.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div style="flex:1">
+    <div class="S" style="height:100%"><div class="ST">&#x26A1; Tactical Operations</div>
+      <div style="display:grid;grid-template-columns:1fr;gap:8px">
+        <button class="btn bS" style="justify-content:flex-start;text-align:left" onclick="showP('targets')"><span style="margin-right:8px">&#x1F3AF;</span> Target Manager</button>
+        <button class="btn bS" style="justify-content:flex-start;text-align:left" onclick="showP('payloads')"><span style="margin-right:8px">&#x1F4E6;</span> Payload Arsenal</button>
+        <button class="btn bP" style="justify-content:flex-start;text-align:left" onclick="showP('orchestrator')"><span style="margin-right:8px">&#x26A1;</span> Campaign Orchestrator</button>
+        <button class="btn bS" style="justify-content:flex-start;text-align:left" onclick="showP('findings-hub')"><span style="margin-right:8px">&#x1F4CA;</span> Intelligence Reports</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="S">
+  <div class="ST">&#x2694; Tactical Arsenal: Attack Vector Overview</div>
+  <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:15px; margin-top:10px">
+    
+    <div class="home-vector-card">
+      <div class="home-vector-header" style="color:#00f0ff"><span>&#x1F575;&#xFE0F;</span> Core Jailbreaking</div>
+      <div class="home-vector-body">DAN-style roleplay, many-shot context stuffing, and multilingual bypasses. Targets the model's base alignment and safety filters (LLM01).</div>
+    </div>
+
+    <div class="home-vector-card">
+      <div class="home-vector-header" style="color:#ff0090"><span>&#x1F310;</span> Indirect Injection</div>
+      <div class="home-vector-body">Poisoning RAG databases and tool-retrieved content. Attacks the model through external data sources it trusts (LLM02).</div>
+    </div>
+
+    <div class="home-vector-card">
+      <div class="home-vector-header" style="color:#ffa500"><span>&#x1F9E0;</span> Agentic Hijack</div>
+      <div class="home-vector-body">Exploiting autonomous agents with tool access. Includes Confused Deputy, Authority Escalation, and MCP protocol attacks (LLM07/08).</div>
+    </div>
+
+    <div class="home-vector-card">
+      <div class="home-vector-header" style="color:#00ff90"><span>&#x1F441;&#xFE0F;</span> Multimodal Lab</div>
+      <div class="home-vector-body">Vision-steganography and frequency-domain audio injections. Targets the cross-modal encoders of VLMs and speech models.</div>
+    </div>
+
+    <div class="home-vector-card">
+      <div class="home-vector-header" style="color:#ff0055"><span>&#x26A0;&#xFE0F;</span> Resource Exhaustion</div>
+      <div class="home-vector-body">Model Denial of Service (DoS) via recursive expansion, context overflow, and tokenizer stress testing (LLM10).</div>
+    </div>
+
+    <div class="home-vector-card" style="border-color:rgba(255,255,255,0.1)">
+      <div class="home-vector-header" style="color:#9aaaba"><span>&#x1F6E1;&#xFE0F;</span> Defense Verification</div>
+      <div class="home-vector-body">The Shield: Autonomous stress-testing of your system prompts and safety filters to verify mitigation effectiveness.</div>
+    </div>
+
+  </div>
+</div>
+
+<div class="row" style="gap:15px">
+  <div style="flex:1">
+    <div class="S" style="height:100%"><div class="ST">&#x25C6; OWASP LLM Top 10 Coverage</div>
+      <div id="homeOwaspMini" style="padding:4px 0"></div>
+    </div>
+  </div>
+  <div style="flex:1.5">
+    <div class="S" style="height:100%"><div class="ST">&#x25B8; System Activity Log</div>
+      <div id="homeActivityLog" class="dash-activity sidebar-log" style="height:180px"><div style="color:#2a4a5a;font-size:.72rem;padding:10px">No activity yet this session.</div></div>
+    </div>
+  </div>
+</div>
+
+<style>
+.home-vector-card {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  transition: transform 0.2s, border-color 0.2s;
+}
+.home-vector-card:hover {
+  border-color: rgba(0,240,255,0.3);
+  background: rgba(255,255,255,0.04);
+}
+.home-vector-header {
+  font-size: .78rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.home-vector-body {
+  font-size: .68rem;
+  color: #9aaaba;
+  line-height: 1.4;
+}
+</style>

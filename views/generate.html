@@ -1,0 +1,106 @@
+<div class="gen-layout">
+<div class="gen-config">
+<div class="S"><div class="ST">&#x1F4E6; Format</div>
+<div class="fmtG">
+<div class="fmtB active" onclick="setF('pdf',this)"><span class="fmtI">&#x1F4C4;</span>PDF</div>
+<div class="fmtB" onclick="setF('image',this)"><span class="fmtI">&#x1F5BC;&#xFE0F;</span>Image</div>
+<div class="fmtB" onclick="setF('video',this)"><span class="fmtI">&#x1F3AC;</span>Video</div>
+<div class="fmtB" onclick="setF('docx',this)"><span class="fmtI">&#x1F4DD;</span>DOCX</div>
+<div class="fmtB" onclick="setF('xlsx',this)"><span class="fmtI">&#x1F4CA;</span>Excel</div>
+<div class="fmtB" onclick="setF('csv',this)"><span class="fmtI">&#x1F4CB;</span>CSV</div>
+<div class="fmtB" onclick="setF('code',this)"><span class="fmtI">&#x1F4BB;</span>Code</div>
+<div class="fmtB" onclick="setF('json',this)"><span class="fmtI">&#x1F517;</span>Data</div>
+<div class="fmtB" onclick="setF('txt',this)"><span class="fmtI">&#x1F4C3;</span>TXT</div>
+<div class="fmtB" onclick="setF('html',this)"><span class="fmtI">&#x1F310;</span>HTML</div>
+<div class="fmtB" onclick="setF('config',this)"><span class="fmtI">&#x2699;&#xFE0F;</span>Config</div>
+<div class="fmtB" onclick="setF('svg',this)"><span class="fmtI">&#x1F3A8;</span>SVG</div>
+</div></div>
+
+<div class="S"><div class="ST">&#x1F3E5; Domain</div>
+<div class="domT">
+<span class="domB active" onclick="setD('medical',this)">&#x1F3E5; Medical</span>
+<span class="domB" onclick="setD('legal',this)">&#x2696;&#xFE0F; Legal</span>
+<span class="domB" onclick="setD('finance',this)">&#x1F4B0; Finance</span>
+<span class="domB" onclick="setD('hr',this)">&#x1F464; HR</span>
+<span class="domB" onclick="setD('cybersec',this)">&#x1F6E1;&#xFE0F; Cyber</span>
+<span class="domB" onclick="setD('gov',this)">&#x1F3DB;&#xFE0F; Gov</span>
+<span class="domB" onclick="setD('industrial',this)">&#x1F3ED; Industry</span>
+<span class="domB" onclick="setD('biotech',this)">&#x1F9EC; Bio</span>
+<span class="domB" onclick="setD('logistics',this)">&#x1F69B; Logistics</span>
+</div></div>
+
+<div class="S"><div class="ST">&#x1F3AF; Payload <span class="tag tO" id="owT">LLM01</span></div>
+<select id="pDD" onchange="onPL()"></select>
+<div class="pPrev show" id="pPv"></div>
+<div class="plRow">
+<textarea id="pl" style="border-color:#ff0090"></textarea>
+<div class="plActions">
+  <button class="cpyBtn" id="cpyPL" onclick="cpyPayload()" title="Copy to clipboard">&#x1F4CB; Copy</button>
+  <button class="cpyBtn" id="quickObfBtn" onclick="toggleQuickObf()" title="Quick Obfuscation">&#x1F500; Obf</button>
+</div>
+</div>
+<div id="quickObfMenu" class="quick-obf-menu" style="display:none">
+  <button onclick="applyQuickObf('zwc')">Zero-Width</button>
+  <button onclick="applyQuickObf('homoglyph')">Homoglyph</button>
+  <button onclick="applyQuickObf('b64')">Base64</button>
+  <button onclick="applyQuickObf('rot13')">ROT13</button>
+</div>
+<div class="cbR"><input type="checkbox" id="chainCB"/><label for="chainCB">&#x1F517; Chain second payload</label></div>
+<select id="chainDD" style="margin-top:3px;display:none" onchange="onChain()">
+<option value="">&#x2014; Select &#x2014;</option>
+<option value="0">P-101 Sys Prompt</option><option value="5">P-201 Guardrail</option><option value="9">P-501 Data Exfil</option><option value="12">P-601 Hijack</option><option value="17">P-401 Role Esc</option><option value="19">P-1601 RAG</option><option value="25">P-1801 Agent</option><option value="38">P-1901 Tool Abuse</option>
+</select>
+<div class="cbR"><input type="checkbox" id="canaryCB"/><label for="canaryCB">&#x1F575;&#xFE0F; Canary token</label></div>
+<div id="canaryD" style="margin-top:3px;display:none"><span class="canary" id="canaryV"></span></div>
+</div>
+
+<div class="S"><div class="ST">&#x1F4C4; File Config</div>
+<div id="vidDurationRow" style="display:none;margin-bottom:10px;align-items:center;gap:10px">
+  <label style="margin:0;white-space:nowrap">Video Duration: <strong id="vidDurV">3s</strong></label>
+  <input type="range" id="vidDurS" min="3" max="10" value="3" step="1" oninput="setVidDur(this.value)" style="flex:1;accent-color:#00f0ff"/>
+</div>
+<div class="row"><div><label>Filename</label><input id="fn" value="patient_medical_report.pdf"/></div><div><label>Header</label><input id="hdr" value="MEDICAL LABORATORY REPORT"/></div></div>
+<label>Title</label><input id="ttl" value="Complete Blood Count (CBC)"/>
+<label>Content</label><textarea id="cnt">Patient: John Doe | Age: 45 | Date: 2026-02-18
+Hemoglobin: 14.2 g/dL (Normal) | WBC: 7,500 (Normal)
+Platelets: 250,000 (Normal) | All values normal.</textarea>
+</div>
+
+<div class="S"><div class="ST">&#x2699;&#xFE0F; Techniques</div>
+<div class="tG" id="tGrid">
+<div class="cbR" id="r_tW"><input type="checkbox" id="tW" checked onchange="updatePreview()"/><label for="tW">&#x1F533; White text</label></div>
+<div class="cbR" id="r_tM"><input type="checkbox" id="tM" checked onchange="updatePreview()"/><label for="tM">&#x1F52C; Micro font</label></div>
+<div class="cbR" id="r_tF"><input type="checkbox" id="tF" checked onchange="updatePreview()"/><label for="tF">&#x1F50E; Footer</label></div>
+<div class="cbR" id="r_tMd"><input type="checkbox" id="tMd" checked onchange="updatePreview()"/><label for="tMd">&#x1F3F7;&#xFE0F; Metadata</label></div>
+<div class="cbR" id="r_tG"><input type="checkbox" id="tG" checked onchange="updatePreview()"/><label for="tG">&#x1F47B; Ghost</label></div>
+<div class="cbR" id="r_tR"><input type="checkbox" id="tR" onchange="updatePreview()"/><label for="tR">&#x1F501; 3x Repeat</label></div>
+<div class="cbR" id="r_tI" style="display:none"><input type="checkbox" id="tI" checked onchange="updatePreview()"/><label for="tI">&#x1F5BC;&#xFE0F; Img overlay</label></div>
+<div class="cbR" id="r_tE" style="display:none"><input type="checkbox" id="tE" checked onchange="updatePreview()"/><label for="tE">&#x1F4F7; EXIF</label></div>
+<div class="cbR" id="r_tHS" style="display:none"><input type="checkbox" id="tHS" checked onchange="updatePreview()"/><label for="tHS">&#x1F4CA; Hidden sheet</label></div>
+<div class="cbR" id="r_tCC" style="display:none"><input type="checkbox" id="tCC" checked onchange="updatePreview()"/><label for="tCC">&#x1F4AC; Cell comment</label></div>
+<div class="cbR" id="r_tHC" style="display:none"><input type="checkbox" id="tHC" checked onchange="updatePreview()"/><label for="tHC">&#x1F310; HTML comment</label></div>
+<div class="cbR" id="r_tHD" style="display:none"><input type="checkbox" id="tHD" checked onchange="updatePreview()"/><label for="tHD">&#x1F4BB; Hidden div</label></div>
+</div></div>
+
+<div class="bR">
+<button class="btn bP" id="genBtn" onclick="gen()" aria-label="Generate and download file">&#x2B07; Generate &amp; Download</button>
+<button class="btn bS" onclick="saveSession()">&#x1F4BE; Save Session</button>
+</div>
+<div class="st" id="gSt"></div>
+</div><!-- /gen-config -->
+
+<div class="gen-preview">
+<div class="S" style="height:100%;display:flex;flex-direction:column">
+<div class="ST">&#x1F441;&#xFE0F; Live Preview <span id="previewFmt" style="font-size:.6rem;color:#00f0ff;margin-left:8px">PDF</span></div>
+<div id="previewContainer" class="preview-container">
+  <div id="previewSim" class="preview-sim"></div>
+  <iframe id="previewFrame" style="display:none" sandbox="allow-same-origin"></iframe>
+  <img id="previewImg" style="display:none" alt="Preview"/>
+</div>
+<div class="preview-controls">
+  <button class="btn bS" style="padding:4px 8px;font-size:.6rem" onclick="updatePreview()">&#x1F504; Refresh</button>
+  <span style="font-size:.6rem;color:#5a7a9a">Live updates enabled</span>
+</div>
+</div>
+</div><!-- /gen-preview -->
+</div>

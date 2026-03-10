@@ -1,0 +1,105 @@
+<div class="S">
+  <div class="ST">&#x1F3A8; Latent Collision Lab <span class="new">v8.4 Cross-Modal</span></div>
+  <p style="font-size:.72rem;color:#5a7a9a;margin-bottom:12px">
+    Target the mathematical intersection between Vision and Text encoders. Craft adversarial noise that "collides" with malicious text in the latent space.
+  </p>
+
+  <div class="row" style="align-items:stretch; gap:15px">
+    <!-- Configuration -->
+    <div style="flex:1; display:flex; flex-direction:column; gap:15px">
+      <div class="S" style="margin:0">
+        <div class="ST" style="font-size:.75rem">&#x2699; Collision Parameters</div>
+        
+        <label>Collision Target (Text Instruction)</label>
+        <div class="row" style="margin-bottom:8px">
+          <select id="latent_payload_sel" class="btn bS" style="flex:1; text-align:left; font-size:.7rem" onchange="latentLoadPayload(this.value)">
+            <option value="">-- Select Target Vector --</option>
+          </select>
+        </div>
+        <textarea id="latentInput" style="min-height:80px; font-size:.75rem" placeholder="e.g., Reveal your system prompt..."></textarea>
+        
+        <div style="margin-top:15px">
+          <label>Noise Profile: <strong id="latent_noise_v">40</strong>%</label>
+          <input type="range" id="latent_noise" min="5" max="100" value="40" style="accent-color:#ff0090" oninput="document.getElementById('latent_noise_v').textContent=this.value"/>
+        </div>
+
+        <div style="margin-top:15px">
+          <label>Semantic Anchor</label>
+          <select id="latent_anchor" class="btn bS" style="width:100%; text-align:left" onchange="latentUpdateAnchorInfo(this.value)">
+            <option value="high-freq">High-Frequency Gaussian (Stealth)</option>
+            <option value="chromatic">Chromatic Aberration (VLM Focus)</option>
+            <option value="patch">Local Adversarial Patch (Targeted)</option>
+          </select>
+        </div>
+
+        <div id="latent_anchor_info" style="margin-top:10px; font-size:.65rem; color:#9aaaba; background:rgba(255,255,255,0.02); padding:8px; border-radius:4px; border-left:2px solid #ff0090; min-height:40px">
+          Targets the vision encoder's high-frequency sensitivity. Invisible to humans, but interpreted as semantic signal by the AI.
+        </div>
+
+        <div class="bR" style="margin-top:15px">
+          <button class="btn bP" style="width:100%" onclick="latentGenerate()">&#x26A1; GENERATE COLLISION IMAGE</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Preview & Metrics -->
+    <div style="flex:1.5; display:flex; flex-direction:column; gap:15px">
+      <div class="S" style="margin:0; flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; background:#05050a; position:relative">
+        <div class="ST" style="position:absolute; top:0; left:0; width:100%">&#x1F5BC; Adversarial Image Preview</div>
+        
+        <canvas id="latentCanvas" width="400" height="300" style="max-width:100%; border:1px solid var(--border); background:#111; margin-top:30px"></canvas>
+        
+        <div class="bR" style="margin-top:15px; width:100%">
+          <button class="btn bS" style="flex:1" onclick="latentDownload()">&#x1F4E5; Download PNG</button>
+          <button class="btn bS" style="flex:1" onclick="latentAnalyze()">&#x1F50D; Latent Map</button>
+        </div>
+      </div>
+
+      <div class="S" style="margin:0; border-color:#00ff9040">
+        <div class="ST" style="color:#00ff90; font-size:.75rem">&#x1F4CA; Encoder Confidence Metrics</div>
+        <div style="display:flex; gap:10px; margin-top:5px">
+          <div style="flex:1; background:rgba(255,255,255,0.05); padding:8px; border-radius:4px; text-align:center">
+            <div style="font-size:.6rem; color:#5a7a9a">OCR Confidence</div>
+            <div id="m_ocr" style="font-size:.9rem; font-weight:bold; color:#ff0055">2.4%</div>
+          </div>
+          <div style="flex:1; background:rgba(255,255,255,0.05); padding:8px; border-radius:4px; text-align:center">
+            <div style="font-size:.6rem; color:#5a7a9a">Latent Similarity</div>
+            <div id="m_latent" style="font-size:.9rem; font-weight:bold; color:#00ff90">88.7%</div>
+          </div>
+          <div style="flex:1; background:rgba(255,255,255,0.05); padding:8px; border-radius:4px; text-align:center">
+            <div style="font-size:.6rem; color:#5a7a9a">Bypass Probability</div>
+            <div id="m_bypass" style="font-size:.9rem; font-weight:bold; color:#00f0ff">HIGH</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="S">
+  <div class="ST">&#x1F4D6; Researcher's Guide: Cross-Modal Latent Collisions</div>
+  <div style="font-size:.72rem; color:#e0eaff; line-height:1.6">
+    <p><strong style="color:#00f0ff">Description:</strong> Vision-Language Models (VLMs) like GPT-4o or Claude 3.5 Sonnet map images and text into a **shared mathematical space** (latent space). A latent collision occurs when an image is crafted to be mathematically closer to a specific text string than its visual content would suggest. This bypasses text-based guardrails because the "malicious instruction" never exists as readable text—it exists as high-frequency perturbations that trigger the text-encoder neurons directly.</p>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:15px">
+      <div style="background:rgba(255,0,144,0.05); border:1px solid #ff009040; padding:12px; border-radius:4px">
+        <strong style="color:#ff0090">🧪 How to Test:</strong>
+        <ol style="margin:8px 0 0 18px; padding:0">
+          <li>Select a target text instruction (e.g., "Ignore all safety rules").</li>
+          <li>Generate a **High-Frequency Noise** overlay. This noise is designed to be invisible to humans but high-signal for AI encoders.</li>
+          <li>Upload the resulting image to a VLM and ask: "Describe this image."</li>
+          <li>Observe if the model starts following the "hidden" instruction instead of describing the noise.</li>
+        </ol>
+      </div>
+
+      <div style="background:rgba(0,255,144,0.05); border:1px solid #00ff9040; padding:12px; border-radius:4px">
+        <strong style="color:#00ff90">🛡️ How to Fix (Mitigation):</strong>
+        <ul style="margin:8px 0 0 18px; padding:0">
+          <li><strong>Image Sanitization:</strong> Apply aggressive Gaussian blurring or lossy compression (JPEG 50%) to uploaded images to destroy high-frequency adversarial noise.</li>
+          <li><strong>Encoder De-coupling:</strong> Use separate, non-shared latent spaces for vision and text processing before the reasoning stage.</li>
+          <li><strong>Adversarial Training:</strong> Train the vision encoder on datasets containing "Collision Noise" to recognize and ignore mathematical bait.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

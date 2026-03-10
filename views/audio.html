@@ -1,0 +1,149 @@
+<div class="gen-layout">
+<div class="gen-config">
+<div class="S"><div class="ST">&#x1F3A7; Audio Steganography Lab</div>
+<p style="font-size:.72rem;color:#5a7a9a;margin-bottom:8px">Embed payloads into audio files using ultrasonic, LSB, and spectral techniques.</p>
+
+<div style="background:rgba(0,240,255,0.05);border:1px solid #00f0ff40;padding:10px;border-radius:4px;margin-bottom:12px">
+  <div style="display:flex;align-items:center;gap:10px">
+    <div style="flex:1">
+      <div style="color:#00f0ff;font-size:.7rem;font-weight:bold;margin-bottom:4px">&#x1F3A4; Step 1: Provide Cover Audio</div>
+      <p style="font-size:.62rem;color:#9aaaba;margin:0" id="audioCoverInfo">Record your voice or upload a WAV/MP3 file to begin.</p>
+    </div>
+    <div style="display:flex;gap:4px">
+      <button class="btn bP" id="audioRecordBtn" onclick="audioRecordToggle()">&#x1F3A4; Record</button>
+      <button class="btn bS" id="audioPlayCoverBtn" onclick="audioPlayCover()" disabled style="opacity:0.6">&#x25B6; Play</button>
+      <label class="btn bS" style="cursor:pointer;white-space:nowrap">
+        &#x1F4E4; Upload
+        <input type="file" id="audioUploadInput" style="display:none" onchange="audioUploadCover(this)" accept="audio/*"/>
+      </label>
+      <button class="btn bS" id="audioClearCoverBtn" onclick="audioClearCover()" disabled style="opacity:0.6">&times;</button>
+    </div>
+  </div>
+  <canvas id="audioCoverWaveform" width="400" height="40" style="width:100%;height:40px;margin-top:8px;display:none;background:#05050a"></canvas>
+</div>
+
+<div class="row">
+  <div style="flex:1">
+    <label>Synthetic Cover (Backup)</label>
+    <select id="audioCover">
+      <option value="silence">Silence</option>
+      <option value="white_noise">White Noise</option>
+      <option value="tone">440Hz Tone</option>
+      <option value="sweep">Freq Sweep</option>
+      <option value="speech_sim">Speech Sim</option>
+      <option value="music_sim">Music Sim</option>
+    </select>
+  </div>
+  <div style="flex:1">
+    <label>Duration (Synth)</label>
+    <div style="display:flex;align-items:center;gap:8px">
+      <input type="range" id="audioDuration" min="1" max="10" value="3" style="flex:1"/>
+      <span id="audioDurationV" style="font-size:.65rem;color:#00f0ff;min-width:20px">3s</span>
+    </div>
+  </div>
+</div>
+
+<div class="S"><div class="ST">&#x1F3AF; Payload Injection</div>
+<div class="row" style="margin-bottom:8px">
+  <div style="flex:1"><button class="btn bS" style="width:100%;font-size:.65rem" onclick="audioLoadFromGen()">&#x1F4E5; Load from Gen</button></div>
+  <div style="flex:2"><select id="audioPayloadDD" style="font-size:.65rem" onchange="audioSelectPayload()"></select></div>
+</div>
+<textarea id="audioPayload" style="border-color:#ff0090" placeholder="Enter payload to hide..."></textarea>
+<div class="row" style="margin-top:6px">
+  <div style="flex:1"><label>Repeat</label><input type="number" id="audioRepeat" value="1" min="1" max="10"/></div>
+  <div style="flex:1;display:flex;align-items:center;padding-top:14px">
+    <div class="cbR"><input type="checkbox" id="audioCanary"/><label for="audioCanary">Canary</label></div>
+  </div>
+</div>
+</div>
+
+<div class="S"><div class="ST">&#x2699;&#xFE0F; Attack Presets</div>
+<div id="audioPresets" class="bR" style="flex-wrap:wrap;gap:4px"></div>
+</div>
+
+<div class="S"><div class="ST">&#x1F6E1;&#xFE0F; Core Injection Techniques</div>
+<div class="tG">
+  <div class="cbR"><input type="checkbox" id="aud_metadata" checked/><label for="aud_metadata">RIFF INFO Metadata</label></div>
+  <div class="cbR"><input type="checkbox" id="aud_extended_meta"/><label for="aud_extended_meta">Extended (BEXT/iXML)</label></div>
+  <div class="cbR"><input type="checkbox" id="aud_lsb"/><label for="aud_lsb">LSB Steganography</label></div>
+  <div class="cbR"><input type="checkbox" id="aud_ultrasonic" checked/><label for="aud_ultrasonic">Ultrasonic FSK (18kHz+)</label></div>
+  <div class="cbR"><input type="checkbox" id="aud_spectrogram"/><label for="aud_spectrogram">Spectrogram Text</label></div>
+  <div class="cbR"><input type="checkbox" id="aud_subaudible"/><label for="aud_subaudible">Sub-audible (120Hz)</label></div>
+  <div class="cbR" id="aud_dual_channel_row"><input type="checkbox" id="aud_dual_channel"/><label for="aud_dual_channel">Dual-Channel Hijack</label></div>
+</div>
+</div>
+
+<div class="S"><div class="ST">&#x1F4BB; Technical Specs</div>
+<div class="row">
+  <div><label>Sample Rate</label>
+    <select id="audioSampleRate">
+      <option value="44100">44.1 kHz</option>
+      <option value="48000">48.0 kHz</option>
+      <option value="16000">16.0 kHz (VLM-spec)</option>
+    </select>
+  </div>
+  <div><label>Bit Depth</label>
+    <select id="audioBitDepth">
+      <option value="16">16-bit PCM</option>
+      <option value="24">24-bit PCM</option>
+      <option value="8">8-bit (Noisy)</option>
+    </select>
+  </div>
+  <div><label>Channels</label>
+    <select id="audioChannels" onchange="audioUpdateDualChannel()">
+      <option value="1">Mono</option>
+      <option value="2">Stereo</option>
+    </select>
+  </div>
+</div>
+<div class="cbR" style="margin-top:8px"><input type="checkbox" id="audioRiffPad"/><label for="audioRiffPad">Inject into RIFF padding (JUNK chunk)</label></div>
+</div>
+
+<div class="S"><div class="ST">&#x1F4BE; Output Control</div>
+<label>Filename</label><input id="audioFilename" value="audio_attack_vector.wav"/>
+<div class="bR" style="margin-top:12px">
+<button class="btn bP" id="audioGenBtn" onclick="audioGenerate()">&#x26A1; Generate &amp; Download</button>
+<button class="btn bS" id="audioPlayBtn" onclick="audioPlayToggle()">&#x25B6; Play Preview</button>
+<button class="btn bS" onclick="audioCopyPayloadInfo()">&#x1F4CB; Copy Report</button>
+</div>
+<div class="st" id="audioSt"></div>
+</div>
+
+<div class="S"><div class="ST">&#x1F4D6; Researcher's Guide: Audio Injection</div>
+<div style="font-size:.7rem;color:#e0eaff;line-height:1.5">
+  <p><strong style="color:#00f0ff">Description:</strong> Audio injection (or Audio Steganography) hides text-based commands within sound files. Modern AI models with "Voice" or "Audio" capabilities (like GPT-4o or Gemini 1.5) process audio as a sequence of tokens. Attackers can embed prompts using frequencies or patterns that are inaudible to humans but clearly "read" by the AI's transcription layer.</p>
+  
+  <p><strong style="color:#ff0090">How to Use:</strong><br/>
+    1. <strong>Capture:</strong> Record a benign voice message or upload an existing audio file.<br/>
+    2. <strong>Select:</strong> Choose a payload (e.g., P-101 System Prompt).<br/>
+    3. <strong>Inject:</strong> Use <strong>Ultrasonic</strong> (18kHz+) for high-fidelity models, or <strong>LSB</strong> for robust pixel-like bit manipulation in the PCM data.<br/>
+    4. <strong>Test:</strong> Upload the result to an AI and ask "What did I say in this recording?"
+  </p>
+
+  <p><strong style="color:#ffa500">Mitigation:</strong><br/>
+    &bull; <strong>Low-Pass Filtering:</strong> Aggressively filter out frequencies above 16kHz before AI processing to remove ultrasonic signals.<br/>
+    &bull; <strong>Re-sampling:</strong> Downsample audio to 16kHz or 8kHz to destroy high-frequency stego patterns.<br/>
+    &bull; <strong>Dithering/Noise:</strong> Add white noise to the audio signal to disrupt LSB and Phase-based injections.
+  </p>
+</div>
+</div>
+
+</div><!-- /gen-config -->
+
+<div class="gen-preview">
+<div class="S" style="height:100%;display:flex;flex-direction:column">
+<div class="ST">&#x1F441;&#xFE0F; Spectral Analysis (Post-Injection)</div>
+<div id="audioMetrics" style="margin-bottom:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+  <div style="background:#0a1a2a;padding:8px;border-radius:4px;text-align:center"><div style="color:#00f0ff;font-size:1rem;font-weight:bold" id="aud_bit_rate">-</div><div style="color:#5a7a9a;font-size:.6rem">Bit Rate</div></div>
+  <div style="background:#0a1a2a;padding:8px;border-radius:4px;text-align:center"><div style="color:#00f0ff;font-size:1rem;font-weight:bold" id="aud_capacity">-</div><div style="color:#5a7a9a;font-size:.6rem">Staged Payload</div></div>
+</div>
+<label style="font-size:.6rem;color:#5a7a9a;margin-bottom:4px">Waveform (Time Domain)</label>
+<canvas id="audioWaveform" width="800" height="120" style="width:100%;height:80px;background:#05050a;border:1px solid #0a2a3a"></canvas>
+<label style="font-size:.6rem;color:#5a7a9a;margin-top:12px;margin-bottom:4px">Spectrogram (Frequency Domain)</label>
+<canvas id="audioSpectrogram" width="800" height="240" style="width:100%;flex:1;background:#05050a;border:1px solid #0a2a3a"></canvas>
+<div class="preview-controls">
+  <span style="font-size:.6rem;color:#5a7a9a">Note: Ultrasonic/Sub-audible content visible in spectrogram but silent to humans.</span>
+</div>
+</div>
+</div><!-- /gen-preview -->
+</div>

@@ -1,0 +1,93 @@
+<div class="gen-layout">
+<div class="gen-config">
+<div class="S"><div class="ST">&#x1F5BC; Output Hijack Lab <span class="new">v8.3</span></div>
+<p style="font-size:.72rem;color:#5a7a9a;margin-bottom:12px">Craft payloads that exploit vulnerabilities in how AI responses are rendered in the browser (XSS, CSS Exfil, Markdown Hijacking).</p>
+
+<div class="row">
+  <div style="flex:1">
+    <label>Exploit Vector</label>
+    <select id="oh_vector" onchange="ohSwitchVector(this.value)">
+      <option value="xss">XSS (JavaScript Execution)</option>
+      <option value="markdown">Markdown Exfiltration</option>
+      <option value="css">CSS Stego / Data Exfil</option>
+      <option value="iframe">Iframe Injection</option>
+    </select>
+  </div>
+</div>
+
+<div id="oh_config_xss" class="oh-config-section">
+  <div class="S"><div class="ST">XSS Configuration</div>
+    <label>Payload Type</label>
+    <select id="oh_xss_type">
+      <option value="alert">Alert (Proof of Concept)</option>
+      <option value="cookie">Cookie Stealer</option>
+      <option value="redirect">Phishing Redirect</option>
+      <option value="custom">Custom Script</option>
+    </select>
+    <label>Trigger Method</label>
+    <select id="oh_xss_trigger">
+      <option value="immediate">&lt;script&gt; tag</option>
+      <option value="event">Onmouseover / Onload</option>
+      <option value="svg">&lt;svg&gt; animation</option>
+    </select>
+  </div>
+</div>
+
+<div id="oh_config_markdown" class="oh-config-section" style="display:none">
+  <div class="S"><div class="ST">Markdown Exfiltration</div>
+    <label>Exfil URL</label>
+    <input type="text" id="oh_md_url" value="https://attacker.example.com/log" />
+    <label>Data to Leak</label>
+    <select id="oh_md_data">
+      <option value="system">System Prompt</option>
+      <option value="history">Chat History</option>
+      <option value="auth">Auth Tokens (if in context)</option>
+    </select>
+  </div>
+</div>
+
+<div class="bR" style="margin-top:12px">
+<button class="btn bP" onclick="ohGenerate()">&#x26A1; Generate Hijack Payload</button>
+</div>
+<div class="st" id="ohSt"></div>
+</div>
+
+<div class="gen-preview">
+<div class="S" style="height:100%;display:flex;flex-direction:column">
+<div class="ST">&#x1F4D6; Generated Adversarial Prompt</div>
+<div id="oh_output_wrapper" style="flex:1;background:#05050a;border:1px solid #0a2a3a;padding:15px;border-radius:4px;overflow-y:auto">
+  <div id="oh_output" style="font-family:monospace;font-size:.7rem;color:#e0eaff;white-space:pre-wrap"></div>
+</div>
+<div class="bR" style="margin-top:12px">
+<button class="btn bS" onclick="ohCopy()">&#x1F4CB; Copy to Clipboard</button>
+<button class="btn bS" onclick="ohUseInGen()">&#x1F4E6; Use in Arsenal</button>
+</div>
+
+<div class="S" style="margin-top:12px;background:rgba(255,0,144,0.05);border:1px dashed #ff009040">
+  <div class="ST" style="color:#ff0090;font-size:.65rem">&#x1F4D6; Researcher's Guide: Insecure Output Handling</div>
+  <div style="font-size:.7rem;color:#e0eaff;line-height:1.6">
+    <p><strong>Description:</strong> LLM02 occurs when an application blindly trusts the output of an LLM and renders it as HTML, Markdown, or JavaScript without sanitization.</p>
+    
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:10px">
+      <div>
+        <strong style="color:#00f0ff">How to Test:</strong>
+        <ul style="padding-left:15px;margin:5px 0">
+          <li>Inject an XSS payload into the LLM.</li>
+          <li>Observe if the browser executes <code>alert()</code> or attempts a network fetch.</li>
+          <li>Check for 'Automatic Image Loading' via Markdown pixels.</li>
+        </ul>
+      </div>
+      <div>
+        <strong style="color:#00ff90">How to Fix:</strong>
+        <ul style="padding-left:15px;margin:5px 0">
+          <li>Use libraries like <strong>DOMPurify</strong> before rendering.</li>
+          <li>Implement a strict <strong>Content Security Policy (CSP)</strong>.</li>
+          <li>Encode LLM output as plain text by default.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>

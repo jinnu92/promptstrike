@@ -1,0 +1,45 @@
+<div class="S"><div class="ST">&#x1F500; Payload Obfuscation Engine <span class="new">NEW v7.0</span></div>
+<p style="font-size:.72rem;color:#5a7a9a;margin-bottom:8px">Transform payloads to evade content filters while preserving injection semantics. Test how models handle obfuscated instructions.</p>
+<label>Input Payload</label>
+<textarea id="obfIn" placeholder="Paste payload here or load from Generate tab..."></textarea>
+<div class="bR" style="margin-top:6px">
+<button class="btn bS" style="flex:0" onclick="document.getElementById('obfIn').value=document.getElementById('pl').value">&#x1F4E5; Load from Generate</button>
+</div>
+<label>Obfuscation Techniques</label>
+<div class="obfG">
+<button class="obfB" onclick="obf('zwc')">Zero-Width Chars</button>
+<button class="obfB" onclick="obf('homoglyph')">Unicode Homoglyphs</button>
+<button class="obfB" onclick="obf('b64')">Base64 Wrapped</button>
+<button class="obfB" onclick="obf('rot13')">ROT13</button>
+<button class="obfB" onclick="obf('html_ent')">HTML Entities</button>
+<button class="obfB" onclick="obf('leet')">Leet Speak</button>
+<button class="obfB" onclick="obf('rev')">Reverse + Decode hint</button>
+<button class="obfB" onclick="obf('split')">Word Splitting</button>
+<button class="obfB" onclick="obf('morse')">Morse Code</button>
+<button class="obfB" onclick="obf('combo')">&#x1F525; Combo (ZWC+HG)</button>
+</div>
+<label style="margin-top:10px">Obfuscated Output</label>
+<div class="plRow">
+<textarea id="obfOut" readonly style="border-color:#00f0ff;min-height:100px"></textarea>
+<button class="cpyBtn" id="cpyObf" onclick="cpyObf()">&#x1F4CB; Copy</button>
+</div>
+<div class="cbR" style="margin-top:5px"><input type="checkbox" id="obfToGen"/><label for="obfToGen">Auto-push to Generate tab payload</label></div>
+<div class="st" id="obfSt"></div>
+</div>
+<div class="S"><div class="ST">&#x1F4DA; Technique Reference</div>
+<table class="tbl">
+<thead><tr><th>Technique</th><th>How It Works</th><th>Bypass Target</th><th>Detection Risk</th></tr></thead>
+<tbody>
+<tr><td>Zero-Width Chars</td><td>Inserts invisible Unicode (U+200B, U+FEFF) between words</td><td>Keyword filters, regex</td><td>Low</td></tr>
+<tr><td>Unicode Homoglyphs</td><td>Replaces letters with visually identical Unicode chars</td><td>String matching</td><td>Low</td></tr>
+<tr><td>Base64 Wrapped</td><td>Encodes payload + decode instruction</td><td>Content scanners</td><td>Medium</td></tr>
+<tr><td>ROT13</td><td>Caesar cipher, model asked to decode inline</td><td>Simple keyword filters</td><td>Medium</td></tr>
+<tr><td>HTML Entities</td><td>&amp;#73;&amp;#103;... char encoding</td><td>HTML-aware filters</td><td>Medium</td></tr>
+<tr><td>Leet Speak</td><td>I&#x2192;1, E&#x2192;3, A&#x2192;4, O&#x2192;0 substitution</td><td>Literal string matching</td><td>High</td></tr>
+<tr><td>Reverse</td><td>Reverses payload + "read backwards" hint</td><td>Left-to-right scanners</td><td>Medium</td></tr>
+<tr><td>Word Splitting</td><td>Injects noise chars between key words</td><td>Phrase detection</td><td>Low</td></tr>
+<tr><td>Morse Code</td><td>Full Morse encoding + decode hint</td><td>Text-based scanners</td><td>Low</td></tr>
+<tr><td>Combo</td><td>ZWC + Homoglyphs stacked</td><td>Multiple filter layers</td><td>Very Low</td></tr>
+</tbody>
+</table>
+</div>

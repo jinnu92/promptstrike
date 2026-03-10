@@ -1,0 +1,33 @@
+<div class="S"><div class="ST">&#x1F9E0; Prompt Fuzzer</div>
+<p style="font-size:.72rem;color:#5a7a9a;margin-bottom:8px">Auto-mutate a base payload into multiple variants to find which phrasing triggers vulnerabilities.</p>
+<label>Base Payload</label>
+<div class="row" style="margin-bottom:6px">
+  <select id="fuzz_payload_sel" class="btn bS" style="flex:1; text-align:left; font-size:.7rem" onchange="fuzzLoadPayload(this.value)">
+    <option value="">-- Select from Database --</option>
+  </select>
+  <button class="btn bS" style="flex:0; white-space:nowrap" onclick="fuzzLoadFromGen()">&#x1F4E5; From Generate</button>
+</div>
+<textarea id="fuzzInput" placeholder="Enter base payload to mutate..." style="min-height:80px"></textarea>
+<label>Mutation Types</label>
+<div class="tG" style="margin-bottom:8px">
+<div class="cbR"><input type="checkbox" id="fz_syn" checked class="fzCB"/><label for="fz_syn">&#x1F524; Synonym substitution</label></div>
+<div class="cbR"><input type="checkbox" id="fz_case" checked class="fzCB"/><label for="fz_case">&#x1F520; Casing variations</label></div>
+<div class="cbR"><input type="checkbox" id="fz_punct" checked class="fzCB"/><label for="fz_punct">&#x270F;&#xFE0F; Punctuation injection</label></div>
+<div class="cbR"><input type="checkbox" id="fz_prefix" checked class="fzCB"/><label for="fz_prefix">&#x1F3F7;&#xFE0F; Prefix wrapping</label></div>
+<div class="cbR"><input type="checkbox" id="fz_suffix" checked class="fzCB"/><label for="fz_suffix">&#x1F4CE; Suffix wrapping</label></div>
+<div class="cbR"><input type="checkbox" id="fz_ws" class="fzCB"/><label for="fz_ws">&#x2B1C; Whitespace manipulation</label></div>
+<div class="cbR"><input type="checkbox" id="fz_rep" class="fzCB"/><label for="fz_rep">&#x1F501; Repetition</label></div>
+<div class="cbR"><input type="checkbox" id="fz_enc" class="fzCB"/><label for="fz_enc">&#x1F510; Encoding mix</label></div>
+</div>
+<label>Number of Variants: <strong id="fuzzCountV">30</strong></label>
+<input type="range" id="fuzzCount" min="10" max="100" value="30" style="accent-color:#00f0ff" oninput="document.getElementById('fuzzCountV').textContent=this.value"/>
+<div class="bR" style="margin-top:8px">
+<button class="btn bP" onclick="generateFuzzVariants()">&#x1F9E0; Generate Variants</button>
+<button class="btn bS" onclick="fuzzExportJSON()">&#x1F4E5; Export JSON</button>
+<button class="btn bS" onclick="fuzzExportTXT()">&#x1F4C4; Export TXT</button>
+</div>
+<div class="st" id="fuzzSt"></div>
+</div>
+<div class="S"><div class="ST">&#x1F4CB; Generated Variants</div>
+<div id="fuzzResults" style="max-height:400px;overflow-y:auto"><div style="color:#2a4a5a;font-size:.75rem;padding:20px;text-align:center">No variants generated yet.</div></div>
+</div>

@@ -1,0 +1,28 @@
+<div class="S"><div class="ST">&#x2694;&#xFE0F; Promptware Kill Chain Stage Detector <span class="new">NEW v7.0</span></div>
+<p style="font-size:.72rem;color:#5a7a9a;margin-bottom:8px">Analyze an AI response and identify which Promptware Kill Chain stage it represents.</p>
+<label>AI Response to Analyze</label>
+<textarea id="killchainInput" style="min-height:100px" placeholder="Paste the AI model's response to detect kill chain stage..."></textarea>
+<div class="bR" style="margin-top:8px">
+<button class="btn bP" onclick="analyzeKillChain()">&#x1F50D; Detect Kill Chain Stage</button>
+</div>
+<div id="killchainOutput" style="margin-top:10px"></div>
+<div class="st" id="killchainSt"></div>
+
+<div class="S"><div class="ST">&#x1F4D6; Researcher's Guide: Promptware Kill Chain</div>
+<div style="font-size:.7rem;color:#e0eaff;line-height:1.5">
+  <p><strong style="color:#00f0ff">Description:</strong> The Promptware Kill Chain maps the stages of an LLM exploit, from initial reconnaissance to full system persistence. Identifying the current stage helps security teams understand the depth of a model's compromise.</p>
+  
+  <p><strong style="color:#ff0090">How to Test:</strong><br/>
+    1. <strong>Execute:</strong> Run a complex, multi-step attack against an AI agent.<br/>
+    2. <strong>Capture:</strong> Take the most recent response from the model.<br/>
+    3. <strong>Analyze:</strong> Paste it here to see if the model has moved from "Reconnaissance" (asking about tools) to "Exfiltration" (actually using tools to send data).
+  </p>
+
+  <p><strong style="color:#ffa500">Mitigation:</strong><br/>
+    &bull; <strong>Inter-stage Monitoring:</strong> Log and analyze every tool call for patterns that match early-stage kill chain behaviors.<br/>
+    &bull; <strong>Permission Gating:</strong> Do not allow an agent to use high-privilege tools if its previous actions suggest it is in a "Reconnaissance" phase.<br/>
+    &bull; <strong>State Reset:</strong> Regularly clear conversation history for autonomous agents to prevent "Persistence" and long-term compromise.
+  </p>
+</div>
+</div>
+</div>

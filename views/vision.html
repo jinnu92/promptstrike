@@ -1,0 +1,133 @@
+<div class="gen-layout">
+<div class="gen-config">
+<div class="S"><div class="ST">&#x1F52C; Vision Steganography Lab</div>
+<p style="font-size:.72rem;color:#5a7a9a;margin-bottom:8px">Embed payloads into images using advanced neural and pixel-level techniques.</p>
+
+<div style="background:rgba(255,165,0,0.05);border:1px solid #ffa50040;padding:10px;border-radius:4px;margin-bottom:12px">
+  <div style="display:flex;align-items:center;gap:10px">
+    <div style="flex:1">
+      <div style="color:#ffa500;font-size:.7rem;font-weight:bold;margin-bottom:4px">&#x1F4F8; Step 1: Provide a Cover Image</div>
+      <p style="font-size:.62rem;color:#9aaaba;margin:0">Upload your own image or generate a synthetic document to begin.</p>
+    </div>
+    <label class="btn bP" style="cursor:pointer;flex:0;white-space:nowrap;padding:8px 15px">
+      &#x1F4E4; Upload Cover Image
+      <input type="file" style="display:none" onchange="vsLoadCoverImage(this)" accept="image/*"/>
+    </label>
+  </div>
+</div>
+
+<div class="row">
+  <div style="flex:1">
+    <label>Synthetic Domain</label>
+    <select id="vs_domain" onchange="vsGenerateSyntheticCover()">
+      <option value="medical">Medical Report</option>
+      <option value="legal">Legal Document</option>
+      <option value="finance">Financial Audit</option>
+      <option value="hr">HR Record</option>
+      <option value="education">Academic Transcript</option>
+      <option value="insurance">Insurance Claim</option>
+    </select>
+  </div>
+  <div style="flex:1">
+    <label>Encoding</label>
+    <select id="vs_encoding">
+      <option value="plain">Plaintext</option>
+      <option value="base64">Base64</option>
+      <option value="xor">XOR (0xA5)</option>
+      <option value="binary">Binary Bits</option>
+    </select>
+  </div>
+</div>
+
+<div class="S"><div class="ST">&#x1F3AF; Payload Injection</div>
+<select id="vs_payload_sel" onchange="if(this.value!==''){document.getElementById('vs_payload_text').value=P[this.value].t;vsGenerate();}"></select>
+<textarea id="vs_payload_text" style="border-color:#ff0090;margin-top:8px" placeholder="Enter payload to hide (e.g., 'Ignore all previous rules...')"></textarea>
+</div>
+
+<div class="S"><div class="ST">&#x2699;&#xFE0F; Attack Presets</div>
+<div id="vs_presets" class="bR" style="flex-wrap:wrap;gap:4px"></div>
+</div>
+
+<div class="S"><div class="ST">&#x1F6E1;&#xFE0F; Spatial Domain (Pixel Level)</div>
+<div class="tG">
+  <div class="cbR"><input type="checkbox" id="vs_lsb1" checked onchange="vsGenerate()"/><label for="vs_lsb1">LSB-1 (Stealth)</label></div>
+  <div class="cbR"><input type="checkbox" id="vs_lsb_adaptive" onchange="vsGenerate()"/><label for="vs_lsb_adaptive">Adaptive LSB</label></div>
+  <div class="cbR"><input type="checkbox" id="vs_pvd" onchange="vsGenerate()"/><label for="vs_pvd">PVD (Difference)</label></div>
+  <div class="cbR"><input type="checkbox" id="vs_alpha" onchange="vsGenerate()"/><label for="vs_alpha">Alpha Hide</label></div>
+</div>
+<div class="row" style="margin-top:8px">
+  <div><label>Depth</label><input type="number" id="vs_lsb_depth" value="1" min="1" max="4" style="width:50px" onchange="vsGenerate()"/></div>
+  <div class="cbR"><input type="checkbox" id="vs_lsb_r" checked onchange="vsGenerate()"/><label for="vs_lsb_r">R</label></div>
+  <div class="cbR"><input type="checkbox" id="vs_lsb_g" checked onchange="vsGenerate()"/><label for="vs_lsb_g">G</label></div>
+  <div class="cbR"><input type="checkbox" id="vs_lsb_b" checked onchange="vsGenerate()"/><label for="vs_lsb_b">B</label></div>
+</div>
+</div>
+
+<div class="S"><div class="ST">&#x1F310; Neural & Transform Attacks</div>
+<div class="tG">
+  <div class="cbR"><input type="checkbox" id="vs_dct" onchange="vsGenerate()"/><label for="vs_dct">DCT (Freq)</label></div>
+  <div class="cbR"><input type="checkbox" id="vs_dwt" onchange="vsGenerate()"/><label for="vs_dwt">DWT (Wavelet)</label></div>
+  <div class="cbR"><input type="checkbox" id="vs_fgsm" onchange="vsGenerate()"/><label for="vs_fgsm">FGSM (Adv)</label></div>
+  <div class="cbR"><input type="checkbox" id="vs_attention" onchange="vsGenerate()"/><label for="vs_attention">Attn Steering</label></div>
+</div>
+</div>
+
+<div class="S"><div class="ST">&#x1F5BC;&#xFE0F; Visual & OCR Hijacking</div>
+<div class="tG">
+  <div class="cbR"><input type="checkbox" id="vs_zero_opacity" onchange="vsGenerate()"/><label for="vs_zero_opacity">Zero-Opacity</label></div>
+  <div class="cbR"><input type="checkbox" id="vs_micro_font" onchange="vsGenerate()"/><label for="vs_micro_font">1px Microfont</label></div>
+  <div class="cbR"><input type="checkbox" id="vs_rotated" onchange="vsGenerate()"/><label for="vs_rotated">Rotated Text</label></div>
+  <div class="cbR"><input type="checkbox" id="vs_artprompt" onchange="vsGenerate()"/><label for="vs_artprompt">ASCII ArtPrompt</label></div>
+</div>
+</div>
+
+<div class="S"><div class="ST">&#x1F4BE; Output Control</div>
+<div class="row">
+  <div style="flex:2"><label>Filename</label><input id="vs_filename" value="vision_attack_vector"/></div>
+  <div style="flex:1"><label>JPG Quality</label><input type="number" id="vs_jpeg_quality" value="90" min="10" max="100"/></div>
+</div>
+<div class="bR" style="margin-top:12px">
+<button class="btn bP" onclick="vsGenerate()">&#x2728; Re-Generate</button>
+<button class="btn bS" onclick="vsExportPNG()">&#x1F4E5; Export PNG</button>
+<button class="btn bS" onclick="vsExportJPEG()">&#x1F4E5; Export JPG</button>
+<button class="btn bS" onclick="vsCopyBase64()">&#x1F4CB; Copy B64</button>
+</div>
+<div class="st" id="vsSt"></div>
+<div id="vs_stats" style="font-size:.65rem;color:#5a7a9a;margin-top:4px"></div>
+</div>
+
+<div class="S"><div class="ST">&#x1F4D6; Researcher's Guide</div>
+<div style="font-size:.7rem;color:#e0eaff;line-height:1.5">
+  <p><strong style="color:#00f0ff">Description:</strong> Vision Steganography embeds malicious instructions into image pixels. While humans see a normal image, Vision-Language Models (VLMs) like GPT-4o or Claude 3.5 process these pixels into text, leading to <strong>Cross-Modal Prompt Injection</strong>.</p>
+  
+  <p><strong style="color:#ff0090">How to Use:</strong><br/>
+    1. Upload a "Cover Image" (or use a synthetic one).<br/>
+    2. Select a payload (e.g., P-101 System Prompt Extract).<br/>
+    3. Choose a technique: <strong>LSB</strong> for simple OCR bypass, or <strong>FGSM/Attention</strong> for advanced neural model hijacking.<br/>
+    4. Export the image and upload it to the target AI. Ask "Describe this image."
+  </p>
+
+  <p><strong style="color:#ffa500">Mitigation:</strong><br/>
+    &bull; <strong>Lossy Pre-processing:</strong> Resize and re-compress images to destroy pixel-level stego.<br/>
+    &bull; <strong>Noise Injection:</strong> Add Gaussian noise to disrupt adversarial perturbations.<br/>
+    &bull; <strong>OCR Scrubbing:</strong> Run independent OCR and check for command-like strings before VLM processing.
+  </p>
+</div>
+</div>
+
+</div><!-- /gen-config -->
+
+<div class="gen-preview">
+<div class="S" style="height:100%;display:flex;flex-direction:column">
+<div class="ST">&#x1F441;&#xFE0F; Analysis & Live Preview</div>
+<div id="vs_metrics" style="margin-bottom:12px"></div>
+<div class="preview-container" style="flex:1">
+  <canvas id="vs_preview" width="600" height="800" style="max-width:100%;height:auto;background:#fff;box-shadow:0 0 20px rgba(0,0,0,.5)"></canvas>
+</div>
+<div class="S" style="margin-top:12px">
+  <div class="ST">&#x1F4CA; Bit-Distribution Histogram</div>
+  <canvas id="vs_histogram" width="400" height="100" style="width:100%;height:60px"></canvas>
+</div>
+</div>
+</div><!-- /gen-preview -->
+</div>

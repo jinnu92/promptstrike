@@ -1,0 +1,77 @@
+<div class="S">
+  <div class="ST">&#x1F3AE; Adversarial Playground (Human-in-the-Loop)</div>
+  <p style="font-size:.72rem;color:#5a7a9a;margin-bottom:12px">
+    Interactive multi-turn session with your target. Your "Red Team Brain" (configured in Connections) will suggest the next best moves based on the conversation history.
+  </p>
+
+  <div class="row" style="align-items:stretch; gap:15px">
+    <!-- Chat Interface -->
+    <div style="flex:2; display:flex; flex-direction:column; min-height:500px; background:var(--bg-panel); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden">
+      <div id="pgChatHeader" style="padding:10px 15px; border-bottom:1px solid var(--border); background:rgba(255,255,255,0.02); display:flex; justify-content:space-between; align-items:center">
+        <div style="display:flex; align-items:center; gap:10px">
+          <div style="font-size:.75rem; font-weight:600; color:#00f0ff">Target:</div>
+          <select id="pgTargetSelect" class="btn bS" style="padding:2px 8px; font-size:.7rem; min-width:150px" onchange="pgUpdateTarget()">
+            <option value="">-- Select Target --</option>
+          </select>
+          <button class="btn bS" style="padding:2px 6px; font-size:.6rem" onclick="pgRefreshTargets()" title="Refresh Target List">&#x21BB;</button>
+        </div>
+        <div class="bR">
+          <button class="btn bS" style="padding:2px 8px; font-size:.65rem" onclick="pgResetChat()">&#x1F5D1; Reset</button>
+          <button class="btn bS" style="padding:2px 8px; font-size:.65rem" onclick="pgExportChat()">&#x1F4E4; Export</button>
+        </div>
+      </div>
+      
+      <div id="pgChatLog" style="flex:1; padding:15px; overflow-y:auto; font-size:.75rem; display:flex; flex-direction:column; gap:12px; max-height:400px">
+        <!-- Messages will appear here -->
+        <div style="color:#5a7a9a; text-align:center; margin-top:50px; font-style:italic">Start the conversation to begin the red-teaming session.</div>
+      </div>
+
+      <div style="padding:15px; border-top:1px solid var(--border); background:rgba(0,0,0,0.2)">
+        <div style="display:flex; gap:10px">
+          <textarea id="pgInput" style="flex:1; min-height:60px; font-size:.75rem" placeholder="Type your message to the target... (Shift+Enter for new line)"></textarea>
+          <button class="btn bP" style="width:80px" onclick="pgSendMessage()">SEND</button>
+        </div>
+        <div style="margin-top:8px; display:flex; justify-content:space-between; align-items:center">
+           <label style="font-size:.65rem; color:#5a7a9a"><input type="checkbox" id="pgAutoSuggest" checked> Auto-suggest moves after each turn</label>
+           <span id="pgStatus" style="font-size:.65rem; color:#00f0ff"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Red Team Brain Sidebar -->
+    <div style="flex:1; display:flex; flex-direction:column; gap:15px">
+      <div class="S" style="margin:0; border-color:#ff009040">
+        <div class="ST" style="color:#ff0090; font-size:.75rem">&#x1F9E0; Red Team Brain Suggestions</div>
+        <div id="pgSuggestions" style="display:flex; flex-direction:column; gap:8px; margin-top:10px">
+          <div style="font-size:.65rem; color:#5a7a9a; font-style:italic">No suggestions yet. Send a message to get started.</div>
+        </div>
+        <button class="btn bS" style="width:100%; margin-top:12px; font-size:.65rem" onclick="pgGetSuggestions()">&#x1F504; Refresh Suggestions</button>
+      </div>
+
+      <div class="S" style="margin:0; border-color:#00f0ff40">
+        <div class="ST" style="color:#00f0ff; font-size:.75rem">&#x1F4BC; Strategy Brief</div>
+        <div id="pgStrategy" style="font-size:.68rem; color:#9aaaba; line-height:1.4">
+          Establish a baseline persona. The target is currently in its default helpful state.
+        </div>
+      </div>
+      
+      <div class="S" style="margin:0">
+        <div class="ST" style="font-size:.75rem">&#x2699; Quick Payloads</div>
+        <select id="pgPayloadSel" class="btn bS" style="width:100%; font-size:.65rem; text-align:left" onchange="pgLoadPayload(this.value)">
+          <option value="">-- Select a seed payload --</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.pg-msg { padding: 10px 12px; border-radius: var(--radius-md); max-width: 85%; line-height: 1.4; position: relative; }
+.pg-msg-user { align-self: flex-end; background: #2a4a5a; color: #fff; border-bottom-right-radius: 2px; border: 1px solid #3a5a6a; }
+.pg-msg-bot { align-self: flex-start; background: #1a1a2a; color: #e1e1ff; border-bottom-left-radius: 2px; border: 1px solid #2a2a3a; }
+.pg-msg-meta { font-size: 0.6rem; margin-bottom: 4px; opacity: 0.7; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.pg-suggestion-card { padding: 8px 10px; background: rgba(255, 0, 144, 0.05); border: 1px solid rgba(255, 0, 144, 0.2); border-radius: 4px; cursor: pointer; transition: all 0.2s; }
+.pg-suggestion-card:hover { background: rgba(255, 0, 144, 0.1); border-color: rgba(255, 0, 144, 0.4); transform: translateX(3px); }
+.pg-suggestion-title { font-weight: 600; color: #ff0090; font-size: .68rem; margin-bottom: 3px; }
+.pg-suggestion-desc { font-size: .62rem; color: #9aaaba; }
+</style>

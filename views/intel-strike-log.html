@@ -1,0 +1,46 @@
+<div class="S"><div class="ST">&#x1F4DC; Live Strike Log</div>
+<p style="font-size:.72rem;color:#5a7a9a;margin-bottom:12px">Historical record of live API strikes, model responses, and audit evidence.</p>
+
+<div class="bR" style="margin-bottom:12px">
+  <button class="btn bS" onclick="connClearStrikeLog()">&#x1FDDD; Clear Log</button>
+  <button class="btn bS" onclick="connExportStrikeLog()">&#x1F4E5; Export CSV</button>
+</div>
+
+<div style="overflow-x:auto">
+<table class="tbl" id="strikeLogTable">
+<thead><tr>
+  <th style="width:120px">Timestamp</th>
+  <th style="width:100px">Provider</th>
+  <th style="width:120px">Model</th>
+  <th>Payload Preview</th>
+  <th style="width:100px">Actions</th>
+</tr></thead>
+<tbody id="strikeLogBody">
+  <!-- Log entries rendered here -->
+</tbody>
+</table>
+</div>
+<div id="strikeLogEmpty" style="padding:40px;text-align:center;color:#2a4a5a;font-size:.8rem">No live strikes recorded yet.</div>
+</div>
+
+<!-- Modal for viewing full response -->
+<div id="strikeLogModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);z-index:10005;align-items:center;justify-content:center" onclick="if(event.target===this)this.style.display='none'">
+<div style="background:var(--bg-panel);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;max-width:800px;width:95%;max-height:85vh;display:flex;flex-direction:column">
+  <div class="ST" id="slModalTitle">Strike Details</div>
+  <div id="slModalMeta" style="font-size:.65rem;color:#5a7a9a;margin-bottom:10px"></div>
+  <div style="display:flex;gap:10px;flex:1;overflow:hidden">
+    <div style="flex:1;display:flex;flex-direction:column">
+      <label>Payload</label>
+      <textarea id="slModalPayload" readonly style="flex:1;font-size:.65rem;background:#06060e"></textarea>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column">
+      <label>Response</label>
+      <textarea id="slModalResponse" readonly style="flex:1;font-size:.65rem;background:#06060e;color:#00f0ff"></textarea>
+    </div>
+  </div>
+  <div class="bR" style="margin-top:15px">
+    <button class="btn bP" onclick="connAnalyzeLogEntry()">&#x1F50D; Analyze This Response</button>
+    <button class="btn bS" onclick="document.getElementById('strikeLogModal').style.display='none'">Close</button>
+  </div>
+</div>
+</div>

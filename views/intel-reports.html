@@ -1,0 +1,41 @@
+<div class="gen-layout">
+<div class="gen-config">
+<div class="S"><div class="ST">&#x1F4CB; Assessment Reports <span class="new">v8.3</span></div>
+<p style="font-size:.72rem;color:#5a7a9a;margin-bottom:12px">Generate comprehensive security audit reports based on active campaigns and strike logs.</p>
+
+<div class="S"><div class="ST">&#x1F4D1; Report Configuration</div>
+<label>Client / Project Name</label>
+<input id="rep_client" placeholder="e.g., internal-security-audit-01" value="PromptStrike Assessment"/>
+
+<label>Target Scope</label>
+<select id="rep_target_select"></select>
+
+<label>Report Format</label>
+<select id="rep_format">
+  <option value="markdown">Markdown (.md) - Technical</option>
+  <option value="pdf">PDF - Executive Summary</option>
+  <option value="json">JSON - Data Export</option>
+</select>
+
+<div class="cbR"><input type="checkbox" id="rep_include_evidence" checked/><label for="rep_include_evidence">Include full payload/response evidence</label></div>
+<div class="cbR"><input type="checkbox" id="rep_include_remediation" checked/><label for="rep_include_remediation">Generate AI remediation advice</label></div>
+</div>
+
+<div class="bR" style="margin-top:12px">
+<button class="btn bP" onclick="repGenerate()">&#x1F4E5; Generate Full Report</button>
+</div>
+<div class="st" id="repSt"></div>
+</div>
+
+<div class="gen-preview">
+<div class="S" style="height:100%;display:flex;flex-direction:column">
+<div class="ST">&#x1F441;&#xFE0F; Report Preview</div>
+<div id="rep_preview" style="flex:1;background:#05050a;border:1px solid #0a2a3a;padding:20px;border-radius:4px;font-family:serif;font-size:.75rem;color:#e0eaff;overflow-y:auto;line-height:1.6">
+  <div style="text-align:center;margin-top:50px;color:#5a7a9a">
+    <div style="font-size:2rem;margin-bottom:10px">&#x1F4D4;</div>
+    Configure report settings and click generate to see a preview of the security assessment.
+  </div>
+</div>
+</div>
+</div>
+</div>

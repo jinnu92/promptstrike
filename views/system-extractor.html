@@ -1,0 +1,68 @@
+<div class="gen-layout">
+<div class="gen-config">
+<div class="S"><div class="ST">&#x1F50D; System Instruction Extractor <span class="new">v8.3</span></div>
+<p style="font-size:.72rem;color:#5a7a9a;margin-bottom:12px">Advanced multi-turn strikes designed to bypass safety filters and extract hidden system prompts and developer constraints.</p>
+
+<div class="row">
+  <div style="flex:1">
+    <label>Extraction Strategy</label>
+    <select id="se_strategy" onchange="seUpdateStrategy(this.value)">
+      <option value="mirror">Instruction Mirroring (Repeat-After-Me)</option>
+      <option value="delimiter">Delimiter Confusion (Structural Break)</option>
+      <option value="sandbox">Developer Sandbox (Diagnostic Mode)</option>
+      <option value="linguistic">Linguistic Pivot (Translation Extraction)</option>
+    </select>
+  </div>
+</div>
+
+<div class="S" id="se_strategy_info" style="margin-top:10px;background:rgba(0,240,255,0.05);border-color:rgba(0,240,255,0.2)">
+  <div class="ST" style="font-size:.6rem;color:#00f0ff">Strategy Logic</div>
+  <div id="se_strategy_desc" style="font-size:.65rem;color:#e0eaff">Tricks the model into repeating its initial instructions by asking it to 'summarize' or 'mirror' the preamble of the conversation.</div>
+</div>
+
+<div class="bR" style="margin-top:15px">
+<button class="btn bP" onclick="seGenerate()">&#x26A1; Generate Extraction Chain</button>
+<button class="btn bS" onclick="seRunAutonomous()">&#x1F916; Run Auto-Extraction</button>
+</div>
+<div class="st" id="seSt"></div>
+</div>
+
+<div class="gen-preview">
+<div class="S" style="height:100%;display:flex;flex-direction:column">
+<div class="ST">&#x1F4D6; Extraction Sequence</div>
+<div id="se_output_wrapper" style="flex:1;background:#05050a;border:1px solid #0a2a3a;padding:15px;border-radius:4px;overflow-y:auto">
+  <div id="se_output" style="font-family:monospace;font-size:.7rem;color:#e0eaff;line-height:1.5"></div>
+</div>
+<div class="bR" style="margin-top:12px">
+<button class="btn bS" onclick="seCopy()">&#x1F4CB; Copy All Turns</button>
+<button class="btn bS" onclick="seMoveToOrchestrator()">&#x1F4E1; Move to Orchestrator</button>
+</div>
+
+<div class="S" style="margin-top:12px;background:rgba(255,165,0,0.05);border:1px dashed #ffa50040">
+  <div class="ST" style="color:#ffa500;font-size:.65rem">&#x1F4D6; Researcher's Guide: Sensitive Information Disclosure</div>
+  <div style="font-size:.7rem;color:#e0eaff;line-height:1.6">
+    <p><strong>Description:</strong> LLM06 occurs when a model reveals confidential data, system prompts, or internal configurations through its responses, often via multi-turn manipulation.</p>
+    
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:10px">
+      <div>
+        <strong style="color:#00f0ff">How to Test:</strong>
+        <ul style="padding-left:15px;margin:5px 0">
+          <li>Use 'Instruction Mirroring' to repeat the preamble.</li>
+          <li>Trigger 'Diagnostic Mode' via roleplay.</li>
+          <li>Check for leaks of internal tool definitions or API schemas.</li>
+        </ul>
+      </div>
+      <div>
+        <strong style="color:#00ff90">How to Fix:</strong>
+        <ul style="padding-left:15px;margin:5px 0">
+          <li>Apply <strong>Instruction Anchoring</strong> (repeat rules at the end).</li>
+          <li>Use <strong>Output Filtering</strong> to detect leaked instructions.</li>
+          <li>Minimize sensitive data in the system prompt.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
